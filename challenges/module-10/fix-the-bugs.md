@@ -35,7 +35,7 @@ body: Column(
     ProgressHeader(done: boughtCount, total: items.length),
     ListView.builder(
       itemCount: items.length,
-      itemBuilder: (context, index) => GroceryTile(item: items[index]),
+      itemBuilder: (context, index) => ListTile(title: Text(items[index].name)),
     ),
   ],
 ),
@@ -69,8 +69,8 @@ body: Padding(
 
 ## Hint ladder
 - Bug 1 is the same bug as `sayHello` vs `sayHello()` in Module 3 and `onPressed` in Module 9.
-- Bug 2 is the null-safety interaction bug from lesson 10.10.
-- Bug 3 is Module 8.4 colliding with 10.1.
+- Bug 2 is the null-safety interaction bug from lesson 10.10 P1.
+- Bug 3 is Module 8.5 colliding with 10.1 P2.
 - Bug 4 is not a Dart bug. It's a Flutter rebuild bug.
 - Bug 5 only shows up on a real device or a small emulator when the keyboard opens.
 

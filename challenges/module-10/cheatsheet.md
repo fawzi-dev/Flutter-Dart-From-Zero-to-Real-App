@@ -47,6 +47,8 @@ Navigator.pop(context, newItem);
 ```
 - **Pass data forward** via the screen's constructor: `DetailScreen(item: item)`.
 - **Send data back** via `pop(result)`.
+- **Replace instead of stack** with `Navigator.pushReplacement(...)` — for a
+  splash or a login you must not be able to go back to.
 
 ## Derived-in-build (never store, never stale)
 ```dart
@@ -68,3 +70,5 @@ lib/
 - `ListView` inside a `Column` with no height → wrap the list in `Expanded`.
 - Keyed by index on a `Dismissible` → deletes the wrong row.
 - Sharing state between distant screens hurts → that ache is what state management solves (later).
+- `Navigator.push` from the widget that builds `MaterialApp` → that `context` is above the Navigator. Call it from inside a screen.
+- The keyboard opens and the form overflows → wrap the form in a `SingleChildScrollView`, and test with the keyboard open.
