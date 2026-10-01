@@ -1,0 +1,33 @@
+# Flutter / Dart
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Firebase local config (never commit real config from the dev project)
+**/google-services.json
+**/GoogleService-Info.plist
+**/firebase_options.dart
+
+# Generated local artifacts
+
+# Generated Android / iOS files. Every Flutter project ignores these in its own
+# android/ and ios/ .gitignore; these rules also catch a folder that has lost
+# its project (no pubspec.yaml, no .gitignore), which is how they got in before.
+**/android/.gradle/
+**/android/local.properties
+**/android/gradlew
+**/android/gradlew.bat
+**/android/gradle/wrapper/gradle-wrapper.jar
+**/GeneratedPluginRegistrant.*
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/ephemeral/

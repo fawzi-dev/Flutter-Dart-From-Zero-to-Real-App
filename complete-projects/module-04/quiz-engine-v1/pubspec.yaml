@@ -1,0 +1,8 @@
+name: quiz_engine_v1
+description: Quiz Engine v1 (parallel lists) — Module 4 project
+publish_to: 'none'
+version: 1.0.0
+environment:
+  sdk: ^3.9.0
+dev_dependencies:
+  lints: ^6.0.0

@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users may only touch their own documents.
+    //
+    // `resource.data`         = the document as it exists in the database
+    // `request.resource.data` = the document being written right now
+    //
+    // create MUST check request.resource, or a user could plant documents
+    // stamped with someone else's uid.
+
+    match /tasks/{taskId} {
+      allow read, update, delete: if request.auth != null
+                                  && request.auth.uid == resource.data.uid;
+      allow create: if request.auth != null
+                    && request.auth.uid == request.resource.data.uid;
+    }
+
+    // Favorites are never edited in the app -- only created, read and
+    // removed -- so `update` is not granted. Grant the least you need.
+    match /favorites/{favoriteId} {
+      allow read, delete: if request.auth != null
+                          && request.auth.uid == resource.data.uid;
+      allow create: if request.auth != null
+                    && request.auth.uid == request.resource.data.uid;
+    }
+  }
+}

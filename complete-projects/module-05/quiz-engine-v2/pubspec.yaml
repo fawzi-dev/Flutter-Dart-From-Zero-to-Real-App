@@ -1,0 +1,8 @@
+name: quiz_engine_v2
+description: Quiz Engine v2 (classes) — Module 5 project
+publish_to: 'none'
+version: 1.0.0
+environment:
+  sdk: ^3.9.0
+dev_dependencies:
+  lints: ^6.0.0

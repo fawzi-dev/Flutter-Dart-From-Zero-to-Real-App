@@ -1,57 +1,44 @@
 # Starter Projects
 
-Minimal skeletons students open before each Flutter challenge. **The student types the code — the starter only removes setup friction.**
+The project you open before a lesson or challenge starts. Each one takes care
+of setup — packages, images, colours, the parts the lesson isn't about — so
+your time goes on what the lesson teaches. **The code the lesson teaches, you
+type.**
 
-## The anti-80% rule
+## Using a starter
 
-Every starter is a **complete, runnable Flutter project** created with `flutter create` (Android + iOS platform folders included) — `flutter pub get && flutter run` must work with zero errors on a fresh clone. But the *Dart code* the student sees is minimal:
-1. `pubspec.yaml` — name, pinned SDK, assets and packages already declared (nobody loses an hour to YAML indentation)
-2. `assets/` — images/fonts the project needs
-3. `lib/main.dart` — **~20 lines**: imports, `main()`, one empty `Scaffold`, and `// TODO` comments naming what to build
-4. `README.md` — the mission, the challenge-file link, run instructions
-5. `android/` + `ios/` — untouched `flutter create` output (no `test/` folder — starters ship without tests)
+Open the starter's own folder in your editor (the one with `pubspec.yaml` in
+it), then:
 
-**Never** prebuilt widgets to "fill in", **never** helper functions, **never** commented-out answers. If a starter grows past 30 lines of Dart, it's doing the student's work — cut it.
-
-**Quality gate for every starter:** `flutter analyze` reports zero issues, `flutter run` boots to the empty TODO scaffold on a device. The profile and dice assets are already real; the remaining recording-gate asset is the My Day app icon.
-
-## The template `main.dart`
-
-```dart
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        // TODO: build the About Me card here.
-        // Target screenshot: see README.md
-      ),
-    );
-  }
-}
 ```
+flutter pub get
+flutter run
+```
+
+It should start without errors and show a mostly empty screen. That's correct:
+you fill it in.
+
+Keep your work. Several later modules pick up a project you built earlier, and
+continuing in your own code is better than switching to a starter.
 
 ## Starters in this course
 
-| Folder | Module | Notes |
+| Folder | Module | What's already there |
 |---|---|---|
-| `module-07/about-me-card/` | 7 | assets: profile photo |
-| `module-08/dicee/` | 8–9 | assets: dice1–6 images |
-| `module-09/bmi-calculator/` | 9 | plain template |
-| `module-10/shopping-list/` | 10 | plain template |
-| `module-11/weather-now/` | 11 | `http` pre-added in pubspec |
-| `module-12/signup-form/` | 12 | themed `MaterialApp` shell |
-| `module-13/adaptive-gallery/` | 13 | themed `MaterialApp` shell |
-| `module-14/my-day/` | 14 | app icon assets only |
-| `module-15/my-day-local/` | 15 | **exception (like M16):** the COMPLETE My Day app — the module adds local storage to an app you already built |
-| `module-16/my-day-cloud/` | 16 | **exception:** the COMPLETE My Day app — the module adds Firebase. Students who built Module 14 continue in their own code instead |
+| `module-07/about-me-card/` | 7 | Your profile photo, wired into `pubspec.yaml` |
+| `module-08/layout-playground/` | 8 | `ColorCard`, the colours and the spacing scale — the concept lessons |
+| `module-08/ticket-booking/` | 8 | The colours, the spacing scale and `assets/event.jpg` |
+| `module-08/dicee/` | 8–9 | The six dice images |
+| `module-09/state-playground/` | 9 | One empty screen — the concept lessons |
+| `module-09/bmi-calculator/` | 9 | An empty app |
+| `module-10/shopping-list/` | 10 | An empty app |
+| `module-11/weather-now/` | 11 | The `http` package, already added |
+| `module-12/signup-form/` | 12 | A themed, empty app |
+| `module-13/adaptive-gallery/` | 13 | A themed, empty app |
+| `module-14/my-day/` | 14 | The app icon |
+| `module-15/my-day-local/` | 15 | **The finished My Day app.** This module adds storage to an app you already built — or use your own Module 14 code |
+| `module-16/my-day-cloud/` | 16 | **The finished My Day app.** This module adds Firebase — or use your own Module 14 code |
 
-Modules 0–6 are Dart console modules: **no starters** — the challenge brief in `challenges/` is the starter, and DartPad is the editor.
+Modules 0–6 are Dart console programs, so they have no starters. You create
+each one yourself with `dart create`, the way lesson 0.5 shows, and the brief
+in `challenges/` tells you what to build.

@@ -1,0 +1,8 @@
+name: guessing_game_v1
+description: Guessing Game v1 — Module 2 project
+publish_to: 'none'
+version: 1.0.0
+environment:
+  sdk: ^3.9.0
+dev_dependencies:
+  lints: ^6.0.0
