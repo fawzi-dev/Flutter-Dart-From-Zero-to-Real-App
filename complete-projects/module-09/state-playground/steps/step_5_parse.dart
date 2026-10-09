@@ -1,7 +1,8 @@
-// End of lesson 9.5 Part 1 -- "TextField & Controllers".
+// End of lesson 9.8 Part 1 -- "Bad Input".
 //
-// Users talk back. One rule, both ends in the same class: create a
-// controller, dispose the controller.
+// A tiny "double my number" screen. First it trusts the user and crashes;
+// then tryParse and errorText make it polite. The ticket card read a typed
+// code in 9.6 P1-P2. Now a numeric field must convert text safely.
 
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FormScreen(),
+      home: DoubleScreen(),
     );
   }
 }
@@ -76,54 +77,64 @@ class _CounterScreenState extends State<CounterScreen> {
   }
 }
 
-class FormScreen extends StatefulWidget {
-  const FormScreen({super.key});
+class DoubleScreen extends StatefulWidget {
+  const DoubleScreen({super.key});
 
   @override
-  State<FormScreen> createState() => _FormScreenState();
+  State<DoubleScreen> createState() => _DoubleScreenState();
 }
 
-class _FormScreenState extends State<FormScreen> {
-  // Created once, as a field. Inside build, every rebuild would make a new,
-  // empty one.
-  final nameController = TextEditingController();
-  String greeting = '';
+class _DoubleScreenState extends State<DoubleScreen> {
+  final numberController = TextEditingController();
+  double? result;
+  // null: no message. Text: shown in red under the field.
+  String? errorText;
 
-  // The other end of the pair: hand the controller back when the screen goes.
   @override
   void dispose() {
-    nameController.dispose();
+    numberController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Text field')),
+      appBar: AppBar(title: const Text('Double my number')),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
             TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                labelText: 'Your name',
-                hintText: 'e.g. Fawzi',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.person),
+              controller: numberController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: 'A number',
+                errorText: errorText,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
+                // tryParse, not parse: "I'll try; if I can't, you get null."
+                final number = double.tryParse(numberController.text);
                 setState(() {
-                  greeting = 'Hello, ${nameController.text}!';
+                  if (number == null) {
+                    errorText = 'Please enter a number';
+                    result = null;
+                  } else {
+                    errorText = null;
+                    result = number * 2;
+                  }
                 });
               },
-              child: const Text('Submit'),
+              child: const Text('Double it'),
             ),
             const SizedBox(height: 24),
-            Text(greeting, style: const TextStyle(fontSize: 24)),
+            Text(
+              result == null ? '' : '$result',
+              style: const TextStyle(fontSize: 48),
+            ),
           ],
         ),
       ),

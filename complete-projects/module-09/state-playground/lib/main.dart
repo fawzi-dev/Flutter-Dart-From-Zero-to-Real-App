@@ -1,11 +1,13 @@
-// End of the first half of lesson 9.5 Part 2 -- "Bad Input".
+// End of lesson 9.8 Part 3 -- "Two Choices Can Stay Visible".
 //
-// A tiny "double my number" screen. First it trusts the user and crashes;
-// then tryParse and errorText make it polite. The second half of the video,
-// the discount code, is the ticket app: ../ticket-booking-v2-interactive/,
-// steps/step_4a_discount.dart.
+// Two short choices, both on screen, one tap to switch: a SegmentedButton
+// above the height card. The Gender enum names the two answers; selected
+// takes a Set, and selection.first takes the one value back out.
 
 import 'package:flutter/material.dart';
+
+// Exactly one of two names: an enum, from lesson 5.4.
+enum Gender { male, female }
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DoubleScreen(),
+      home: HeightScreen(),
     );
   }
 }
@@ -71,61 +73,6 @@ class _CounterScreenState extends State<CounterScreen> {
               },
               child: const Text('Add one'),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class FormScreen extends StatefulWidget {
-  const FormScreen({super.key});
-
-  @override
-  State<FormScreen> createState() => _FormScreenState();
-}
-
-class _FormScreenState extends State<FormScreen> {
-  // Created once, as a field. Inside build, every rebuild would make a new,
-  // empty one.
-  final nameController = TextEditingController();
-  String greeting = '';
-
-  // The other end of the pair: hand the controller back when the screen goes.
-  @override
-  void dispose() {
-    nameController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Text field')),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                labelText: 'Your name',
-                hintText: 'e.g. Fawzi',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.person),
-              ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  greeting = 'Hello, ${nameController.text}!';
-                });
-              },
-              child: const Text('Submit'),
-            ),
-            const SizedBox(height: 24),
-            Text(greeting, style: const TextStyle(fontSize: 24)),
           ],
         ),
       ),
@@ -190,6 +137,80 @@ class _DoubleScreenState extends State<DoubleScreen> {
             Text(
               result == null ? '' : '$result',
               style: const TextStyle(fontSize: 48),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HeightScreen extends StatefulWidget {
+  const HeightScreen({super.key});
+
+  @override
+  State<HeightScreen> createState() => _HeightScreenState();
+}
+
+class _HeightScreenState extends State<HeightScreen> {
+  // A slider's values are doubles: the thumb can stop anywhere on the track.
+  double height = 175;
+  Gender gender = Gender.male;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Height')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+              child: SegmentedButton<Gender>(
+                segments: const [
+                  ButtonSegment(value: Gender.male, label: Text('Male')),
+                  ButtonSegment(value: Gender.female, label: Text('Female')),
+                ],
+                // A Set: nothing in it twice. Ours always holds one value.
+                selected: {gender},
+                onSelectionChanged: (selection) {
+                  setState(() => gender = selection.first);
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            Card(
+              elevation: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text('Height', style: TextStyle(fontSize: 18)),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: Text(
+                        '${height.round()} cm',
+                        style: const TextStyle(
+                          fontSize: 44,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                    // Walls, not checks: nothing outside 120-220 can come out.
+                    Slider(
+                      value: height,
+                      min: 120,
+                      max: 220,
+                      divisions: 100,
+                      onChanged: (value) {
+                        setState(() => height = value);
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

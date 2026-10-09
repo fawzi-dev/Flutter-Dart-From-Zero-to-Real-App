@@ -43,77 +43,75 @@ class DiceePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // The felt of the table: a gradient, drawn by a BoxDecoration.
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [kFeltDark, kFeltLight],
+            colors: [
+              kFeltDark,
+              kFeltLight,
+            ],
           ),
         ),
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'DICEE',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 34,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 8,
+          child: Center(
+            child: Column(
+              children: [
+                Text(
+                  "DICE",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 34,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Tap ROLL to play',
-                style: TextStyle(color: kSubtitle),
-              ),
-              const Spacer(),
+                Text(
+                  "Tap ROLL to play",
+                  style: TextStyle(color: kSubtitle),
+                ),
 
-              // THE layout lesson: two Expanded children split the row
-              // evenly. Resize the window — they stay equal, because no
-              // width is written anywhere in this file.
-              const Row(
-                children: [
-                  Expanded(child: DieFace(value: 1)),
-                  Expanded(child: DieFace(value: 2)),
-                ],
-              ),
+                Spacer(),
 
-              const Spacer(),
-              // The ROLL button -- a styled Container, like the ticket
-              // card's Book button. It only LOOKS pressable, and it is dimmed
-              // on purpose: nothing can happen yet. In Module 9 it becomes a
-              // real ElevatedButton and wakes up.
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 44,
-                  vertical: 18,
-                ),
-                decoration: BoxDecoration(
-                  color: kButtonFill,
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
+                Row(
                   children: [
-                    Icon(Icons.casino, color: kButtonText),
-                    SizedBox(width: kGapS),
-                    Text(
-                      'ROLL',
-                      style: TextStyle(
-                        color: kButtonText,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
+                    Expanded(
+                      child: DieFace(value: 3),
+                    ),
+                    Expanded(
+                      child: DieFace(
+                        value: 5,
                       ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: kGapXL),
-            ],
+
+                Spacer(),
+
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 44, vertical: 18),
+                  decoration: BoxDecoration(
+                    color: kButtonFill,
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Row(
+                    spacing: kGapS,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.casino),
+                      Text(
+                        "ROLL",
+                        style: TextStyle(
+                          color: kButtonText,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -121,8 +119,6 @@ class DiceePage extends StatelessWidget {
   }
 }
 
-/// One die: the image on a soft translucent pad.
-/// Extracted so the Row above reads as "two dice, side by side".
 class DieFace extends StatelessWidget {
   const DieFace({super.key, required this.value});
 
@@ -131,13 +127,15 @@ class DieFace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(kGapM),
-      padding: const EdgeInsets.all(kGapM),
+      margin: EdgeInsets.all(kGapM),
+      padding: EdgeInsets.all(kGapM),
       decoration: BoxDecoration(
         color: kDiePad,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(
+          24,
+        ),
       ),
-      child: Image.asset('assets/dice-$value.png'),
+      child: Image.asset('assets/dice-$value.png'), // assets/dice-2.png
     );
   }
 }

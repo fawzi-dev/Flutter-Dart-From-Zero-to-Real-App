@@ -23,41 +23,80 @@ final list = jsonDecode(res.body) as List;                   // array
 
 ## Model with fromJson (raw JSON stops here)
 ```dart
-class Weather {
-  final double temp; final int code;
-  Weather({required this.temp, required this.code});
-  factory Weather.fromJson(Map<String, dynamic> j) => Weather(
-    temp: (j['temperature'] as num).toDouble(),   // num->double: JSON gotcha
-    code: j['weathercode'] as int,
-  );
+class Quote {
+  final int id;
+  final String text;
+  final String author;
+  Quote({required this.id, required this.text, required this.author});
+
+  factory Quote.fromJson(Map<String, dynamic> json) {
+    return Quote(
+      id: json['id'] as int,
+      text: json['quote'] as String,      // their name -> your name
+      author: json['author'] as String,
+    );
+  }
 }
-// array -> List: for (var i...) list.add(Model.fromJson(items[i]));
+// A number that could have decimals: (json['price'] as num).toDouble()
+```
+
+## The service (the wall JSON stops at)
+```dart
+class QuoteService {
+  static final _url = Uri.parse('https://dummyjson.com/quotes/random');
+
+  static Future<Quote> fetchRandom() async {
+    final response = await http.get(_url);
+    if (response.statusCode != 200) {
+      throw Exception('Quote service returned ${response.statusCode}');
+    }
+    return Quote.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+  }
+}
+// Call it on the class: QuoteService.fetchRandom()
 ```
 
 ## The loading / error / data trio
 ```dart
-bool isLoading = true;  String? error;  Weather? data;
+bool isLoading = true;  String? error;  Quote? quote;
 
 @override
-void initState() { super.initState(); load(); }
+void initState() { super.initState(); loadQuote(); }
 
-Future<void> load() async {
+Future<void> loadQuote() async {
   setState(() { isLoading = true; error = null; });
   try {
-    final result = await Service.fetch();
+    final result = await QuoteService.fetchRandom();
     if (!mounted) return;                        // screen still alive?
-    setState(() { data = result; isLoading = false; });
+    setState(() { quote = result; isLoading = false; });
   } catch (e) {
     if (!mounted) return;
-    setState(() { error = 'Could not connect.'; isLoading = false; });  // BOTH set here
+    setState(() {
+      error = "Couldn't reach the quote service. Check your connection.";
+      isLoading = false;                         // EVERY way out sets this
+    });
   }
 }
 
-Widget build(context) {
-  if (isLoading) return const CircularProgressIndicator();
-  if (error != null) return ErrorView(message: error!, onRetry: load);
-  return DataView(data: data!);                  // '!' justified: both cases returned
+Widget buildBody() {
+  if (isLoading) return const Center(child: CircularProgressIndicator());
+  if (error != null) return Center(child: Text(error!));  // + Retry: onPressed: loadQuote
+  return QuoteView(quote: quote!);               // '!' is safe: both other cases returned
 }
 ```
+
+## A problem with its own name (the challenge)
+```dart
+class CityNotFoundException implements Exception {}
+
+try {
+  ...
+} on CityNotFoundException {     // specific first
+  ...
+} catch (e) {                    // general last
+  ...
+}
+```
+- Parallel JSON arrays (`time[i]`, `temperature_2m[i]` describe the same hour): one `for` loop reads across them into a `List` of models.
 - Service lives in `services/` — **no `http` import in a screen file.**
 - Always test **airplane mode**: friendly error + working Retry, never a crash.

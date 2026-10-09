@@ -36,9 +36,9 @@ One screen with **two views**, swapped by a single `bool`:
 
 ## Hints (gated)
 - **Build order:** get the input view working with plain widgets first (gender, slider, steppers all visibly changing state) → wire Calculate + the `showResult` swap → build the result view → *then* pull the repeated pieces out into widget classes → *then* style everything through `AppColors`. Run at every step.
-- **It's all one pattern.** `SegmentedButton` has `onSelectionChanged`, `Slider` has `onChanged`, your stepper calls a callback you pass it — every one of them just `setState`s a field. Learn one, you know all (lesson 9.6).
+- **It's all one pattern.** `SegmentedButton` has `onSelectionChanged`, `Slider` has `onChanged`, your stepper calls a callback you pass it — every one of them just `setState`s a field. Learn one, you know all (lessons 9.8 Parts 2 and 3).
 - **Value → position:** the bar covers a BMI range (say 15–40). Turn the BMI into a fraction from 0 to 1 (and `.clamp` it), then into `Alignment`'s −1 (far left) to 1 (far right). Feed that to an `Align` around the marker.
-- **No text fields here — on purpose.** You already hardened free-text input (`tryParse`, friendly errors, the hostile-user pass) in lesson 9.5's temperature converter. This challenge does the *opposite*: inputs so constrained the user simply can't be wrong. Making bad input **impossible** is itself a design skill — a slider can't return `"abc"`.
+- **No text fields here — on purpose.** You already hardened free-text input (`tryParse`, friendly errors, the hostile-user pass) in lesson 9.8 P1's temperature converter. This challenge does the *opposite*: inputs so constrained the user simply can't be wrong. Making bad input **impossible** is itself a design skill — a slider can't return `"abc"`.
 
 ## Bonus
 Swap the marker's `Align` for `AnimatedAlign` with a ~400 ms duration, so it *glides* to its spot on each Calculate. One-word change, and it's your first taste of implicit animation — the thing Module 10 leans into.

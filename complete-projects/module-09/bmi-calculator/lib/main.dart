@@ -1,6 +1,6 @@
 // BMI Calculator — Module 9 project
 //
-// Built in solution video 9.9. Two things this module teaches:
+// Built in solution video 9.10. Two things this module teaches:
 //
 //   1. REUSABLE WIDGETS. This whole file is built from a handful of small,
 //      named widget classes (InputCard, StepperButton, PrimaryButton,
@@ -72,7 +72,7 @@ class _BmiScreenState extends State<BmiScreen> {
 
   bool showResult = false;
 
-  // The answer is not a field. Like the ticket's total in 9.3, it is computed
+  // The answer is not a field. Like the ticket's total in 9.5 P2, it is computed
   // from the fields every time it is read, so it can never be out of date.
   double get bmi {
     final metres = height / 100; // the slider is in centimetres
@@ -156,7 +156,7 @@ class _BmiScreenState extends State<BmiScreen> {
                   value: height,
                   min: 120,
                   max: 220,
-                  divisions: 100, // whole centimetres, as in 9.6 Part 4
+                  divisions: 100, // whole centimetres, as in 9.8 Part 2
                   activeColor: AppColors.primary,
                   onChanged: (value) => setState(() => height = value),
                 ),

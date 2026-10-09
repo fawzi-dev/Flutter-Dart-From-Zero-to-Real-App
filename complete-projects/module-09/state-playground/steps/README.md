@@ -15,8 +15,8 @@ would have if you typed along.
 |---|---|---|
 | `ButtonScreen` | 9.1 P1 | One `ElevatedButton`. What it shows, what it does. |
 | `CounterScreen` | 9.2 | A number and a button. Broken in 9.2, alive in 9.3 P1. |
-| `FormScreen` | 9.5 P1 | One `TextField`, its controller, and a greeting. |
-| `DoubleScreen` | 9.5 P2 | "Double my number": input that cannot be trusted. |
+| `DoubleScreen` | 9.8 P1 | "Double my number": input that cannot be trusted. |
+| `HeightScreen` | 9.8 P2 | A height card with a `Slider`: a number with walls. Gets a `SegmentedButton` in 9.8 P3. |
 
 ## The steps
 
@@ -26,29 +26,29 @@ would have if you typed along.
 | `step_2_named_function.dart` | 9.1 P2 | Passing a function vs calling it | The anonymous function becomes `handleTap`, passed with no parentheses |
 | `step_3_broken_counter.dart` | 9.2 | Why the screen won't change | **Deliberately broken.** `CounterScreen` with `count` inside `build`: the terminal counts, the screen stays at 0 |
 | `step_4_setstate_counter.dart` | 9.3 P1 | `StatefulWidget`, `State`, `setState` | `CounterScreen` converted, `count` moved into the State class, the change wrapped in `setState` |
-| `step_5_controller.dart` | 9.5 P1 | `TextField`, `InputDecoration`, `TextEditingController`, `dispose` | `FormScreen`: a decorated field, a controller as a field, Submit puts the text in a greeting |
-| `step_6_parse.dart` | 9.5 P2, first half | `double.parse` vs `double.tryParse`, `errorText`, `keyboardType` | `DoubleScreen`, already polite: bad input gets a red line, not an exception |
+| `step_5_parse.dart` | 9.8 P1 | `double.parse` vs `double.tryParse`, `errorText`, `keyboardType` | `DoubleScreen` recaps the controller from the ticket; bad input gets a red line, not an exception |
+| `step_6_slider.dart` | 9.8 P2 | `Slider`: `min`, `max`, `divisions`, a `double` field, `round()` | `HeightScreen`: one card, the height, and a slider held to 120–220 cm |
+| `step_7_segmented.dart` | 9.8 P3 | `SegmentedButton`, an `enum`, a `Set` | A Male / Female toggle above the height card |
 
-`lib/main.dart` is the same file as `step_6`, so the project always runs.
+`lib/main.dart` is the same file as `step_7`, so the project always runs.
 
-The other Module 9 lessons do not use this project. 9.1 P3, 9.2's second half,
-9.3 P2, 9.5 P2's second half, 9.6 Parts 1 to 3 and 9.7 are the ticket booking
-app in `../ticket-booking-v2-interactive/`. 9.4 is Dicee. 9.6 Parts 4 and 5
-are small demos in `../bmi-calculator/steps/`.
+The ticket card runs from 9.5 P1 to 9.7 P2. Dicee is 9.4. The BMI
+challenge is 9.9 and its solution is 9.10.
+
 
 ## The mistakes are the lessons
 
-Five of the six lessons make a mistake on purpose. None of the broken
-versions is saved as a file except step 3, because each one is one line away
-from the step it belongs to. Make each one yourself:
+Several videos make a mistake on purpose. None of the broken versions
+is saved as a file except step 3, because each one is one line away from the
+step it belongs to:
 
 | Lesson | The mistake, made on purpose | What you see |
 |---|---|---|
 | 9.1 P1 | Leave out `onPressed` | `The named parameter 'onPressed' is required, but there's no corresponding argument.` |
 | 9.1 P2 | `onPressed: handleTap()` | `This expression has a type of 'void' so its value can't be used.` and `Tapped!` printed with nobody tapping |
 | 9.3 P1 | Take `setState` away again | 9.2's symptom, back on demand |
-| 9.5 P1 | Move the controller line into `build` | Submit shows the greeting, and the field comes back empty |
-| 9.5 P2 | `double.parse` instead of `tryParse`, then type `abc` | Nothing changes on screen; the terminal says `EXCEPTION CAUGHT BY GESTURE` ... `Invalid double` |
+| 9.8 P1 | `double.parse` instead of `tryParse`, then type `abc` | Nothing changes on screen; the terminal says `EXCEPTION CAUGHT BY GESTURE` ... `Invalid double` |
+| 9.8 P2 | Start the slider at `250` | `Value 250.0 is not between minimum 120.0 and maximum 220.0` |
 
 ## Why step 3 matters more than the others
 

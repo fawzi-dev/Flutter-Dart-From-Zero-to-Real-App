@@ -1,4 +1,4 @@
-// BMI Calculator -- snapshot at the end of 9.9 Part 2.
+// BMI Calculator -- snapshot at the end of 9.10 Part 2.
 //
 // The finished calculator: result view, category, scale and a marker that
 // lands where the BMI falls. Same as lib/main.dart.
@@ -57,7 +57,7 @@ class _BmiScreenState extends State<BmiScreen> {
 
   bool showResult = false;
 
-  // The answer is not a field. Like the ticket's total in 9.3, it is computed
+  // The answer is not a field. Like the ticket's total in 9.5 P2, it is computed
   // from the fields every time it is read, so it can never be out of date.
   double get bmi {
     final metres = height / 100; // the slider is in centimetres
@@ -141,7 +141,7 @@ class _BmiScreenState extends State<BmiScreen> {
                   value: height,
                   min: 120,
                   max: 220,
-                  divisions: 100, // whole centimetres, as in 9.6 Part 4
+                  divisions: 100, // whole centimetres, as in 9.8 Part 2
                   activeColor: AppColors.primary,
                   onChanged: (value) => setState(() => height = value),
                 ),

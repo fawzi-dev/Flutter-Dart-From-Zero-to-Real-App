@@ -1,66 +1,55 @@
-# Steps — Module 9
+# Steps — Module 9, the ticket card
 
-Module 9 is not a screen *growing*, the way Modules 7 and 8 were. It is one
-screen **gaining behaviour**. So the checkpoints here mark what the screen can
-*do*, not what has been added to it.
+Module 9 is not a screen *growing*, the way Module 8 was. It is one screen
+**gaining behaviour**. So the checkpoints mark what the screen can *do*.
+
+Every file starts from the Module 8 screen exactly as it was built in the videos —
+`EvenDetails`, `DividerContainer`, `Tiers`, `StepButton` — and adds only what
+its lesson teaches. Each file is `lib/main.dart` as it stood at the **end** of
+one video, and its header lists that video's beats in order.
 
 | File | End of | What it is |
 |---|---|---|
-| `step_1_listening.dart` | **9.1 P3** | Real `IconButton`s on the heart and the steppers. `QuantityRow` takes two `VoidCallback`s. They print; nothing on screen changes. |
-| `step_2_broken.dart` | **9.2** | **Deliberately broken.** `quantity` is a local inside `build`: the terminal counts, the screen stays at 2. |
-| `step_3_alive.dart` | **9.3 P2** | `Tier`, `tiers` and `money()`, then `StatefulWidget` + `setState`. The quantity, the tier, the heart and the total all work. |
-| `step_4a_discount.dart` | **9.5 P2** | The app theme, and a discount code that is checked and changes the total. |
-| `step_4b_dropdown.dart` | **9.6 P1** | Delivery comes from a fixed list. |
-| `step_4c_switch.dart` | **9.6 P2** | The reminder can be turned on or off. |
-| `step_4d_checkbox.dart` | **9.6 P3** | Book becomes a real `ElevatedButton`, grey until the policy box is ticked. |
-| `step_5_booked.dart` | **9.7 P1** | Book always answers. It says why it refused, and a booking moves the seats bar and can be undone. |
-| `step_5b_dialog.dart` | **9.7 P2** | Finished, and identical to `lib/main.dart`. Start over asks first. |
+| `step_1_listening.dart` | **9.5 P1** | The screen hears taps; quantity still lives inside `build`. |
+| `step_2_alive.dart` | **9.5 P2** | State, tier data and the computed total make the ticket come alive. |
+| `step_3a_textfield.dart` | **9.6 P1** | Discount TextField, decoration, controller and `dispose`; Apply prints the text. |
+| `step_3b_discount.dart` | **9.6 P2** | Theme, `applyCode`, two guards, `errorText` and the discounted total. |
+| `step_3c_dropdown.dart` | **9.6 P3** | Delivery from a fixed list. |
+| `step_3d_switch.dart` | **9.6 P4** | Reminder on or off. |
+| `step_3e_checkbox.dart` | **9.6 P5** | Policy agreement enables Book. |
+| `step_4_booked.dart` | **9.7 P1** | SnackBars explain refusals and offer UNDO. |
+| `step_4b_dialog.dart` | **9.7 P2** | Start over asks first; final code matches `lib/main.dart`. |
 
-9.1 P1, 9.1 P2, the counter in 9.2, 9.3 P1, 9.5 P1 and the "double my
-number" half of 9.5 P2 are built in `../state-playground/`, and 9.4 is
-Dicee, so they have no ticket checkpoint. 9.6 Parts 4 and 5 use small BMI input demos (in `bmi-calculator/steps/`). They do not change the ticket
-screen, so there is no ticket checkpoint for those two lessons. The BMI
-challenge then builds its own screen from the starter.
+The ticket card runs in one go, 9.5 to 9.7. The concept lessons before it —
+9.1 to 9.3, and 9.8's slider and segmented button after it — are built in
+`../state-playground/`. 9.4 is Dicee. None of them change the ticket screen.
 
-## Why step 2 matters more than the others
+## Why step 1 ends broken
 
-`step_2_broken.dart` is the most useful file in this folder. Lesson 9.2 ends
-unresolved on purpose, and **running the broken version beats being told about
-it.** Tap plus, watch the terminal count up while the screen sits at 2, and
-write your own explanation of why before watching 9.3 P1.
-
-Students who write that sentence first understand `setState` about twice as
-fast, because they already have the question shaped in their head.
+9.5 P1 makes the screen listen, then hands `quantity` to plus and minus the
+way the counter did in 9.2: as a local inside `build`. You will recognise the
+bug in seconds, because they have already met it — and 9.5 P2 fixes it with the
+word they learned on the counter. **Run the broken version** before 9.5 P2.
 
 ## The diffs worth doing
 
-**`step_2_broken.dart` → `step_3_alive.dart`** is the diff of the module. The
-tiers become real data, two classes instead of one, `quantity` moves out of
-`build` into the State class, every change is
-wrapped in `setState`, and the total becomes a **computed getter** so it can
-never disagree with the quantity. Read the getter and then try to find the code
-that updates the price. There isn't any. That's the point.
+**`step_1_listening.dart` → `step_2_alive.dart`** is the diff of the module.
+Two classes instead of one, `quantity` out of `build` and into the State class,
+every change wrapped in `setState`, and the total becomes a **computed getter**
+so it can never disagree with the quantity. Read the getter, then try to find
+the code that updates the price. There isn't any.
 
-**`step_3_alive.dart` → `step_4a_discount.dart`** adds the discount-code
-controller and validation. The next three checkpoints add one booking input
-per lesson: dropdown, switch, then checkbox. The checkbox is the point where
-Book becomes a real button, disabled until the person agrees.
+**`step_2_alive.dart` → `step_3a_textfield.dart`** adds the decorated discount field, controller and matching `dispose`. **`step_3a_textfield.dart` → `step_3b_discount.dart`** adds validation, the theme and the new total. The next three checkpoints add one booking input
+per lesson: dropdown, switch, then checkbox — where Book becomes a real button,
+disabled until the person agrees.
 
-**`step_4d_checkbox.dart` → `step_5_booked.dart`** is 9.7 P1: the button goes
-back to always-enabled (and `VoidCallback?` loses its `?`), `sold` becomes
-state, and `book()` learns to *say* why it refused, plus a SnackBar with
-**UNDO** that puts the seats back.
+**`step_3e_checkbox.dart` → `step_4_booked.dart`**: the button goes back to
+always-enabled (and `VoidCallback?` loses its `?`), `sold` becomes state, and
+`book()` learns to *say* why it refused, plus a SnackBar with **UNDO**.
 
-**`step_5_booked.dart` → `step_5b_dialog.dart`** is 9.7 P2: a Start over button
-and an `AlertDialog` that hands back a `bool`. Booking has UNDO, so it never
-asks. Clearing every choice has no UNDO, so it asks first.
-
-## One thing to read at the end
-
-Read `lib/main.dart` top to bottom once when you finish. Every field in the
-State class is something a human can change, and **everything else on the
-screen is computed from those fields.** That is the whole module in one
-sentence, and it is visible in the shape of the file.
+**`step_4_booked.dart` → `step_4b_dialog.dart`**: a Start over button and an
+`AlertDialog` that hands back a `bool`. Booking has UNDO, so it never asks.
+Clearing every choice has no UNDO, so it asks first.
 
 ## Dicee
 
@@ -68,5 +57,3 @@ Dicee's before and after are two separate projects, so they need no steps:
 
 - **static:** `complete-projects/module-08/dicee-v1-static/`
 - **rolling:** `complete-projects/module-09/dicee-v2-interactive/`
-
-Diff those two and you have lesson 9.4 in about five lines.

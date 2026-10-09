@@ -1,14 +1,16 @@
-# Dicee v2 (interactive) — Module 9
+# dicee_v2
 
-Your Module 8 Dicee, brought to life in lesson 9.4: tap and the dice roll.
+A new Flutter project.
 
-Diff it against `../../module-08/dicee-v1-static/`. The layout is untouched;
-the diff is a `StatefulWidget`, two state fields, one `setState` and the
-callbacks.
+## Getting Started
 
-## Run it
+This project is a starting point for a Flutter application.
 
-```
-flutter pub get
-flutter run
-```
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

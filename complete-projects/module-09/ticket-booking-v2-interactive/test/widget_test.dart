@@ -20,7 +20,7 @@ void main() {
     expect(money(950), '950');
   });
 
-  testWidgets('9.3 — the stepper changes the quantity AND the total',
+  testWidgets('9.5 P2 — the stepper changes the quantity AND the total',
       (tester) async {
     await pump(tester);
 
@@ -37,7 +37,7 @@ void main() {
     expect(find.text('120,000 IQD'), findsOneWidget);
   });
 
-  testWidgets('9.3 — the guard holds at 1 and at 8', (tester) async {
+  testWidgets('9.5 P2 — the guard holds at 1 and at 8', (tester) async {
     await pump(tester);
 
     for (var i = 0; i < 5; i++) {
@@ -48,16 +48,16 @@ void main() {
     expect(find.text('60,000 IQD'), findsOneWidget);
   });
 
-  testWidgets('9.3 — choosing a tier recomputes the total', (tester) async {
+  testWidgets('9.5 P2 — choosing a tier recomputes the total', (tester) async {
     await pump(tester);
 
-    await tester.tap(find.text('Backstage'));
+    await tester.tap(find.text('BACKSTAGE'));
     await tester.pump();
     // 95,000 x 2
     expect(find.text('190,000 IQD'), findsOneWidget);
   });
 
-  testWidgets('9.5 — the code is validated and really changes the price',
+  testWidgets('9.6 P2 — the code is validated and really changes the price',
       (tester) async {
     await pump(tester);
 
@@ -74,7 +74,7 @@ void main() {
     expect(find.text('96,000 IQD'), findsOneWidget);
   });
 
-  testWidgets('9.6 P1 — delivery stays within the fixed choices',
+  testWidgets('9.6 P3 — delivery stays within the fixed choices',
       (tester) async {
     await pump(tester);
     final dropdown = find.byType(DropdownButton<String>);
@@ -88,7 +88,7 @@ void main() {
     expect(tester.widget<DropdownButton<String>>(dropdown).value, 'SMS');
   });
 
-  testWidgets('9.6 P2 — reminder switch updates its stored value',
+  testWidgets('9.6 P4 — reminder switch updates its stored value',
       (tester) async {
     await pump(tester);
     final reminder = find.byType(SwitchListTile);
@@ -100,7 +100,7 @@ void main() {
     expect(tester.widget<SwitchListTile>(reminder).value, isFalse);
   });
 
-  testWidgets('9.6 P3 — policy agreement starts unchecked',
+  testWidgets('9.6 P5 — policy agreement starts unchecked',
       (tester) async {
     await pump(tester);
     final policy = find.byType(CheckboxListTile);
@@ -164,7 +164,7 @@ void main() {
       (tester) async {
     await pump(tester);
 
-    await tester.tap(find.text('Backstage'));
+    await tester.tap(find.text('BACKSTAGE'));
     await tester.pump();
     expect(find.text('190,000 IQD'), findsOneWidget);
 
@@ -189,7 +189,7 @@ void main() {
       (tester) async {
     await pump(tester);
 
-    await tester.tap(find.text('Backstage'));
+    await tester.tap(find.text('BACKSTAGE'));
     await tester.tap(find.byIcon(Icons.add));
     await tester.enterText(find.byType(TextField), 'citadel20');
     await tester.tap(find.text('Apply'));

@@ -1,12 +1,11 @@
-// End of lesson 9.1 P3 -- "The Button Family, and a Screen That Listens".
+// End of lesson 9.5 P1 -- "The Ticket Card Listens".
 //
-// The heart and both steppers are real IconButtons now, with a ripple, and
-// QuantityRow takes two VoidCallbacks: the row reports a tap, the screen
-// decides what it means.
+// *** DELIBERATELY BROKEN AT THE END. RUN IT ANYWAY. ***
 //
-// And NOTHING ON SCREEN CHANGES. Tap plus twenty times: the terminal fills
-// up and the number stays at 2. That is deliberate, and it is the whole of
-// the next video.
+// The heart and both steppers are real IconButtons. StepButton and
+// QuantityRow take a VoidCallback: they report a tap, the screen decides what
+// it means. Then quantity is a local inside build -- the counter's bug from
+// 9.2, on a real screen. The terminal counts; the screen stays at 2.
 
 import 'package:flutter/material.dart';
 
@@ -14,12 +13,12 @@ void main() {
   runApp(const MyApp());
 }
 
+// The palette. Five colours, named once, used everywhere.
 const kInk = Color(0xFF141220);
 const kMuted = Color(0xFF6E6A80);
 const kAccent = Color(0xFFB4453A);
 const kSurface = Color(0xFFF7F5F2);
 const kLine = Color(0xFFE4E0DA);
-
 // The spacing scale. Four numbers, reused everywhere.
 const kGapS = 8.0;
 const kGapM = 12.0;
@@ -42,93 +41,81 @@ class MyApp extends StatelessWidget {
 class TicketScreen extends StatelessWidget {
   const TicketScreen({super.key});
 
-  // A genuinely long title, on purpose. Short ones hide the bug.
-  static const _title = 'Night at the Citadel — Open Air Summer Series';
-  static const _when = 'SAT  ·  14 SEP  ·  8:00 PM';
-
   @override
   Widget build(BuildContext context) {
+    // THE BUG, on purpose: a local inside build, made fresh every build.
+    int quantity = 2;
+
     return Scaffold(
       backgroundColor: kSurface,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(kGapL),
+        child: Padding(
+          padding: EdgeInsets.all(kGapL),
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const EventPoster(),
-                const SizedBox(height: kGapXL),
-
+                EventPoster(),
+                SizedBox(height: kGapXL),
                 Row(
                   children: [
                     Expanded(
                       child: Text(
-                        _title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        "Night at the Citadel — Open Air Summer Serie",
+                        style: TextStyle(
                           color: kInk,
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(width: kGapM),
+                    SizedBox(
+                      width: kGapS,
+                    ),
                     IconButton(
                       onPressed: () {
                         debugPrint('favourite pressed');
                       },
-                      icon: const Icon(Icons.favorite_border, color: kMuted),
+                      icon: Icon(
+                        Icons.favorite_border,
+                        color: kMuted,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: kGapS),
+                SizedBox(height: kGapS),
+                EvenDetails(),
 
-                const Text(
-                  _when,
-                  style: TextStyle(
-                    color: kMuted,
-                    fontSize: 12,
-                    letterSpacing: 2,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: kGapM),
+                SizedBox(height: kGapXL),
 
-                const Text(
-                  'An open-air night in the old amphitheatre, with the city '
-                  'walls behind the stage and doors opening an hour early.',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 14, height: 1.45, color: kMuted),
-                ),
-                const SizedBox(height: kGapXL),
+                SoldBar(sold: 142, total: 200),
+                SizedBox(height: kGapXL),
 
-                const SoldBar(sold: 142, total: 200),
-                const SizedBox(height: kGapXL),
-
-                const TierRow(),
-                const SizedBox(height: kGapXL),
+                Tiers(),
+                SizedBox(height: kGapXL),
 
                 QuantityRow(
-                  quantity: 2,
+                  qty: quantity,
                   onMinus: () {
-                    debugPrint('minus pressed');
+                    quantity--;
+                    debugPrint('quantity is now $quantity');
                   },
                   onPlus: () {
-                    debugPrint('plus pressed');
+                    quantity++;
+                    debugPrint('quantity is now $quantity');
                   },
                 ),
-                const SizedBox(height: kGapL),
+                SizedBox(height: kGapXL),
 
-                Container(height: 1, color: kLine),
-                const SizedBox(height: kGapL),
+                DividerContainer(),
+                SizedBox(height: kGapXL),
 
-                const TotalRow(total: '120,000 IQD'),
-                const SizedBox(height: kGapL),
+                TotalRow(),
+                SizedBox(height: kGapXL),
 
-                const BookButton(),
+                BookButton(),
               ],
             ),
           ),
@@ -138,188 +125,115 @@ class TicketScreen extends StatelessWidget {
   }
 }
 
-class EventPoster extends StatelessWidget {
-  const EventPoster({super.key});
+class EvenDetails extends StatelessWidget {
+  const EvenDetails({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Image.asset(
-            'assets/event.jpg',
-            width: double.infinity,
-            height: 210,
-            fit: BoxFit.cover,
-          ),
-        ),
-        Positioned(
-          top: kGapM,
-          left: kGapM,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: kAccent,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Text(
-              'FEW LEFT',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-                letterSpacing: 2,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// Still a StatelessWidget, and it should be: it owns nothing, it is handed
-/// two numbers. The bar is derived from them, so it cannot disagree.
-class SoldBar extends StatelessWidget {
-  const SoldBar({super.key, required this.sold, required this.total});
-
-  final int sold;
-  final int total;
-
-  @override
-  Widget build(BuildContext context) {
-    const label = TextStyle(fontSize: 12, color: kMuted);
-    final remaining = total - sold;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text('$sold sold', style: label),
-            const SizedBox(width: kGapM),
-            Expanded(
-              child: Row(
-                children: [
-                  // Slices of a pie, not measurements.
-                  Expanded(
-                    flex: sold,
-                    child: Container(
-                      height: 6,
-                      decoration: BoxDecoration(
-                        color: kAccent,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: remaining,
-                    child: Container(
-                      height: 6,
-                      decoration: BoxDecoration(
-                        color: kLine,
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: kGapM),
-            Text('$total seats', style: label),
-          ],
+        Text(
+          "SAT  ·  14 SEP  ·  8:00 PM",
+          style: TextStyle(
+            color: kMuted,
+            fontSize: 12,
+            letterSpacing: 2,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        SizedBox(height: kGapS),
+        Text(
+          'An open-air night in the old amphitheatre, with the city '
+          'walls behind the stage and doors opening an hour early.',
+          style: TextStyle(fontSize: 14, height: 1.45, color: kMuted),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
   }
 }
 
-/// Three equal options share the width, one Expanded each. Exactly one accent:
-/// the selected tier.
-class TierRow extends StatelessWidget {
-  const TierRow({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        Expanded(
-          child: TierChip(name: 'Standard', price: '35,000', selected: false),
-        ),
-        SizedBox(width: kGapS),
-        Expanded(
-          child: TierChip(name: 'VIP', price: '60,000', selected: true),
-        ),
-        SizedBox(width: kGapS),
-        Expanded(
-          child: TierChip(name: 'Backstage', price: '95,000', selected: false),
-        ),
-      ],
-    );
-  }
-}
-
-class TierChip extends StatelessWidget {
-  const TierChip({
+class DividerContainer extends StatelessWidget {
+  const DividerContainer({
     super.key,
-    required this.name,
-    required this.price,
-    required this.selected,
   });
-
-  final String name;
-  final String price;
-  final bool selected;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      color: kLine,
+      height: 2,
+      width: double.infinity,
+    );
+  }
+}
+
+class BookButton extends StatelessWidget {
+  const BookButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
-        color: selected ? kAccent : Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: selected ? kAccent : kLine),
+        color: kAccent,
+        borderRadius: BorderRadius.circular(14),
       ),
-      child: Column(
-        children: [
-          Text(
-            name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: selected ? Colors.white : kInk,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            price,
-            style: TextStyle(
-              fontSize: 11,
-              color: selected ? Colors.white70 : kMuted,
-            ),
-          ),
-        ],
+      child: Text(
+        "Book now",
+        style: TextStyle(
+          fontSize: 16,
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+        ),
+        textAlign: TextAlign.center,
       ),
     );
   }
 }
 
-/// Label at one end, stepper at the other: spaceBetween.
+class TotalRow extends StatelessWidget {
+  const TotalRow({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Total",
+          style: TextStyle(fontSize: 15, color: kMuted),
+        ),
+        Text(
+          "120,000 IQD",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: kInk),
+        ),
+      ],
+    );
+  }
+}
+
 class QuantityRow extends StatelessWidget {
   const QuantityRow({
     super.key,
-    required this.quantity,
+    required this.qty,
     required this.onMinus,
     required this.onPlus,
   });
 
-  final int quantity;
+  final int qty;
 
-  // Lesson 9.1 P3. The row does not decide what a tap means. It reports the
-  // tap, and the screen that owns the number decides.
+  // A function that takes nothing and returns nothing. The row doesn't decide
+  // what a tap means: it hands the tap to whoever built it.
   final VoidCallback onMinus;
   final VoidCallback onPlus;
 
@@ -328,25 +242,33 @@ class QuantityRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
-          'Tickets',
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+        Text(
+          "Tickets",
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         Row(
           children: [
-            _StepButton(icon: Icons.remove, onPressed: onMinus),
+            StepButton(
+              icon: Icons.remove,
+              onPressed: onMinus,
+            ),
+
             SizedBox(
               width: 48,
               child: Text(
-                '$quantity',
+                qty.toString(),
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),
               ),
             ),
-            _StepButton(icon: Icons.add, onPressed: onPlus),
+
+            StepButton(icon: Icons.add, onPressed: onPlus),
           ],
         ),
       ],
@@ -354,8 +276,12 @@ class QuantityRow extends StatelessWidget {
   }
 }
 
-class _StepButton extends StatelessWidget {
-  const _StepButton({required this.icon, required this.onPressed});
+class StepButton extends StatelessWidget {
+  const StepButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+  });
 
   final IconData icon;
   final VoidCallback onPressed;
@@ -370,39 +296,46 @@ class _StepButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: kLine),
       ),
-      // Lesson 9.1 P3. A picture of a button becomes a real one, ripple and
-      // all. onPressed is handed over bare: no brackets.
+      // A real button now, ripple and all. Handed over bare: no brackets.
+      // IconButton brings its own padding, so the icon shrinks to fit.
       child: IconButton(
         onPressed: onPressed,
-        icon: Icon(icon, size: 18, color: kInk),
+        icon: Icon(icon, size: 18),
       ),
     );
   }
 }
 
-class TotalRow extends StatelessWidget {
-  const TotalRow({super.key, required this.total});
-
-  final String total;
+class Tiers extends StatelessWidget {
+  const Tiers({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Fixed label, then the price takes the rest and aligns right.
     return Row(
+      spacing: kGapS,
       children: [
-        const Text('Total', style: TextStyle(fontSize: 15, color: kMuted)),
-        const SizedBox(width: kGapM),
         Expanded(
-          child: Text(
-            total,
-            textAlign: TextAlign.right,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w800,
-              color: kInk,
-            ),
+          // Object 1
+          child: TierChip(
+            name: "STANDARD",
+            price: "35,00",
+          ),
+        ),
+        // Object 2
+        Expanded(
+          child: TierChip(
+            name: "VIP",
+            price: "60,00",
+            isSelected: true,
+          ),
+        ),
+        // Object 3
+        Expanded(
+          child: TierChip(
+            name: "BACKSTAGE",
+            price: "95,00",
           ),
         ),
       ],
@@ -410,28 +343,142 @@ class TotalRow extends StatelessWidget {
   }
 }
 
-/// Still a picture of a button. Lesson 9.6 P3 makes it a real one.
-class BookButton extends StatelessWidget {
-  const BookButton({super.key});
+class TierChip extends StatelessWidget {
+  const TierChip({
+    super.key,
+    required this.name,
+    required this.price,
+    this.isSelected = false,
+  });
+
+  final String name;
+  final String price;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
       decoration: BoxDecoration(
-        color: kAccent,
-        borderRadius: BorderRadius.circular(14),
+        color: isSelected ? kAccent : Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: kLine),
       ),
-      child: const Text(
-        'Book now',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
+      child: Column(
+        children: [
+          Text(
+            name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: isSelected ? Colors.white : kInk,
+            ),
+          ),
+          Text(
+            price,
+            style: TextStyle(
+              color: isSelected ? Colors.white : kMuted,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SoldBar extends StatelessWidget {
+  const SoldBar({super.key, required this.sold, required this.total});
+
+  final int sold;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    final remaining = total - sold;
+    return Row(
+      children: [
+        Text(
+          "$sold sold",
+          style: TextStyle(color: kMuted, fontSize: 12),
         ),
-      ),
+        SizedBox(
+          width: kGapS,
+        ),
+        Expanded(
+          flex: sold,
+          child: Container(
+            height: 6,
+            decoration: BoxDecoration(
+              color: kAccent,
+              borderRadius: BorderRadius.circular(3),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: remaining,
+          child: Container(
+            height: 6,
+            decoration: BoxDecoration(
+              color: kLine,
+              borderRadius: BorderRadius.circular(3),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: kGapS,
+        ),
+        Text(
+          "$total seats",
+          style: TextStyle(color: kMuted, fontSize: 12),
+        ),
+      ],
+    );
+  }
+}
+
+class EventPoster extends StatelessWidget {
+  const EventPoster({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image.asset(
+            "assets/event.jpg",
+            height: 210,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+        ),
+
+        Positioned(
+          top: kGapM,
+          left: kGapM,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: kAccent,
+            ),
+            child: Text(
+              "FEW LEFT",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 10,
+                letterSpacing: 2,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

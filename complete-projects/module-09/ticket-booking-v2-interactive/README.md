@@ -1,6 +1,6 @@
 # Ticket Booking v2 — the Module 9 lesson project
 
-The Module 8 screen, **woken up**. It keeps the poster, palette, description,
+The Module 8 screen, **woken up** — the recorded Module 8 code, with the same names (`EvenDetails`, `DividerContainer`, `Tiers`, `StepButton`), so it matches the videos. It keeps the poster, palette, description,
 tier cards and spacing while the existing controls gain behavior. New booking
 inputs appear below the quantity row, one per lesson.
 
@@ -13,21 +13,23 @@ flutter run
 
 | Lesson | The card gains |
 |--------|----------------|
-| 9.1 P3 · The button family | `IconButton` on the heart and the steppers, and `QuantityRow` takes callbacks. They print. Nothing moves — deliberately |
-| 9.2 · The UI won't update | `quantity` as a local inside `build`: it changes in the terminal; the screen never updates |
-| 9.3 P2 · StatefulWidget & setState | Real tier data (`Tier`, `tiers`, `money`), then one word, and the quantity, the tier and the total all work |
-| 9.4 · Make the dice roll | Nothing — that video is about **your** Dicee app |
-| 9.5 P2 · Bad input, and the discount code | The app theme, and the discount code: controller, validation, `errorText`, `dispose` |
-| 9.6 P1 · Dropdown | Delivery comes from three valid choices |
-| 9.6 P2 · Switch | The customer can turn the reminder on or off |
-| 9.6 P3 · Checkbox | Book becomes a real button, and stays disabled until the policy is accepted |
-| 9.6 P4–P5 · BMI input demos | Slider and segmented button prepare the challenge; the ticket card does not change |
-| 9.7 P1 · SnackBar | Book always answers: it says why it refused, and booking moves the sold bar with a working UNDO |
-| 9.7 P2 · Dialog | Start over asks first, and only a confirmed answer clears the ticket's choices |
+| 9.5 P1 · The ticket card listens | The heart and steppers become `IconButton`s; the screen hears taps. |
+| 9.5 P2 · One word, and it comes alive | `StatefulWidget` + `setState` make tier, quantity, heart and total work. |
+| 9.6 P1 · TextField and controller | A decorated discount field reads its controller when Apply is tapped. The controller is disposed with the screen. |
+| 9.6 P2 · The discount code | `applyCode`, two guards, `errorText`, the app theme and the discounted total. |
+| 9.6 P3 · Dropdown | Delivery comes from three valid choices. |
+| 9.6 P4 · Switch | The customer can turn the reminder on or off. |
+| 9.6 P5 · Checkbox | Book waits for policy agreement. |
+| 9.7 P1 · SnackBar | Book explains refusals, books seats and offers UNDO. |
+| 9.7 P2 · Dialog | Start over asks before clearing the ticket. |
+
+The ticket card runs **in one go**, 9.5 to 9.7 — nine videos in the same
+project. Every concept it needs is taught first on the state playground (9.1 to
+9.3), and Dicee (9.4) comes just before it.
 
 ## Nothing here is faked
 
-That is the point. Pick a tier, change the
+That is the point, and it is worth saying in the videos. Pick a tier, change the
 quantity, enter the code — **the total is genuinely recomputed from those
 three, every rebuild**:
 
@@ -44,21 +46,21 @@ those is a test in `test/`.
 
 ## "My tickets, your dice"
 
-Lesson 9.4 is the exception on purpose. Everything else happens on this
-ticket card; 9.4 opens **your own Module 8 challenge**, Dicee, and brings that
-to life instead. It is the payoff of the module — your app, moving — so it
-gets its own video and its own project
-(`complete-projects/module-09/dicee-v2-interactive/`).
+Dicee (9.4) sits just before the ticket card on purpose. It is **the student's
+own Module 8 challenge** brought to life — the emotional payoff of `setState`,
+on their app — so it gets its own video and its own project
+(`complete-projects/module-09/dicee-v2-interactive/`), and it is where
+`VoidCallback` is first explained, on a tappable die.
 
 The module challenge is the **BMI calculator**, a third shape again.
 
-## The thing to notice
+## The thing to point at in the videos
 
 **The visual identity stays familiar.** The poster, description, palette and
 ticket tiers remain. Module 9 changes the controls and adds booking inputs,
 then gives the screen memory.
 
-## Three details worth noticing
+## Three teaching details worth keeping
 
 **`SoldBar` and `TierChip` are still Stateless** — they own nothing, they are
 handed values and a callback. Only the widget that holds the truth gets

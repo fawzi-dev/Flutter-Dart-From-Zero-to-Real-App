@@ -1,15 +1,16 @@
-# Dicee v1 (static) — Module 8 challenge solution
+# dicee_v1
 
-The Dicee layout from the solution videos 8.10 P1 and P2. Nothing is tappable
-yet — that
-is Module 9.
+A new Flutter project.
 
-The interactive version is `../../module-09/dicee-v2-interactive/`. Diff the two
-and you have lesson 9.4.
+## Getting Started
 
-## Run it
+This project is a starting point for a Flutter application.
 
-```
-flutter pub get
-flutter run
-```
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
