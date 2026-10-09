@@ -1,15 +1,16 @@
 // Ticket Booking v2 -- the Module 8 screen, woken up.
 //
-// The same screen Fawzi built in Module 8, with his names: EvenDetails,
+// The same screen built in Module 8, with the same names: EvenDetails,
 // DividerContainer, Tiers, StepButton. Module 9 adds the controls, one lesson
 // at a time:
 //   9.5 P1  the heart and steppers become IconButtons, with a VoidCallback;
 //           then the counter's bug here: quantity inside build, stuck at 2
 //   9.5 P2  StatefulWidget + setState; Tier, tiers and money(); the total
+//   9.5 P3  Book is a real ElevatedButton; sold in State; the seats guard
 //   9.6 P1  discount TextField, controller and dispose; Apply prints the text
 //   9.6 P2  theme, discount guards, errorText and the discounted total
-//   9.6 P3  delivery dropdown; P4 reminder switch; P5 policy checkbox + real Book
-//   9.7 P1  Book always answers: a SnackBar that refuses, one with UNDO
+//   9.6 P3  delivery dropdown; P4 reminder switch; P5 policy checkbox
+//   9.7 P1  Book always answers: two refusals, and a booking with UNDO
 //   9.7 P2  Start over asks first: an AlertDialog that hands back a bool
 //
 // Every snapshot is in steps/, one per lesson.
@@ -126,9 +127,18 @@ class _TicketScreenState extends State<TicketScreen> {
   }
 
   void book() {
+    // One answer at a time: a new tap replaces whatever is showing.
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     if (!acceptedPolicy) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please accept the refund policy.')),
+      );
+      return;
+    }
+
+    if (sold + quantity > 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Only ${200 - sold} seats left.')),
       );
       return;
     }

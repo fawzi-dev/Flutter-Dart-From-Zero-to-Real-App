@@ -123,6 +123,31 @@ void main() {
     expect(find.text('142 sold'), findsOneWidget);
   });
 
+  testWidgets('9.5 P3 and 9.7 P1 — Book never sells a seat that does not exist',
+      (tester) async {
+    await pump(tester);
+
+    await tester.tap(find.text('I accept the refund policy'));
+    for (var i = 0; i < 6; i++) {
+      await tester.tap(find.byIcon(Icons.add));
+    }
+    await tester.pump();
+    expect(find.text('8'), findsOneWidget);
+
+    // 142 + 7 x 8 = 198. The eighth booking would make 206 of 200.
+    for (var i = 0; i < 7; i++) {
+      await tester.tap(find.text('Book now'));
+      await tester.pump();
+    }
+    expect(find.text('198 sold'), findsOneWidget);
+
+    await tester.tap(find.text('Book now'));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('198 sold'), findsOneWidget);
+    expect(find.text('Only 2 seats left.'), findsOneWidget);
+  });
+
   testWidgets('9.7 P1 — booking moves the sold bar, and UNDO puts it back',
       (tester) async {
     await pump(tester);

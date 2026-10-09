@@ -1,7 +1,7 @@
 // End of lesson 9.6 P5 -- "Agreement Must Be Explicit".
 //
-// The policy box starts empty. Book is a real ElevatedButton now, and it
-// stays grey until the box is ticked: onPressed gets book or null.
+// The policy box starts empty, and Book stays grey until it is ticked:
+// onPressed gets book or null, so BookButton's VoidCallback gains a ?.
 
 import 'package:flutter/material.dart';
 
@@ -84,6 +84,7 @@ class _TicketScreenState extends State<TicketScreen> {
   Tier tier = tiers[1]; // VIP
   int quantity = 2;
   bool isFavourite = false;
+  int sold = 142;
 
   final codeController = TextEditingController();
   String? codeError;
@@ -114,8 +115,9 @@ class _TicketScreenState extends State<TicketScreen> {
   }
 
   void book() {
-    // Wired, but silent. Lesson 9.7 P1 gives it something to say.
-    debugPrint('Booked $quantity tickets');
+    // Never sell a seat that does not exist: a guard clause again.
+    if (sold + quantity > 200) return;
+    setState(() => sold += quantity);
   }
 
   /// Two guards: is it a code at all, and is it *the* code.
@@ -182,7 +184,7 @@ class _TicketScreenState extends State<TicketScreen> {
 
                 SizedBox(height: kGapXL),
 
-                SoldBar(sold: 142, total: 200),
+                SoldBar(sold: sold, total: 200),
                 SizedBox(height: kGapXL),
 
                 Tiers(

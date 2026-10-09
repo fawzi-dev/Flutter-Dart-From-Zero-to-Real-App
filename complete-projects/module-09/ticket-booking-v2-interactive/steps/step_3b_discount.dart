@@ -85,6 +85,7 @@ class _TicketScreenState extends State<TicketScreen> {
   Tier tier = tiers[1]; // VIP
   int quantity = 2;
   bool isFavourite = false;
+  int sold = 142;
 
   final codeController = TextEditingController();
   String? codeError;
@@ -108,6 +109,12 @@ class _TicketScreenState extends State<TicketScreen> {
     final next = quantity + by;
     if (next < 1 || next > 8) return; // a guard clause, lesson 2.9
     setState(() => quantity = next);
+  }
+
+  void book() {
+    // Never sell a seat that does not exist: a guard clause again.
+    if (sold + quantity > 200) return;
+    setState(() => sold += quantity);
   }
 
   /// Two guards: is it a code at all, and is it *the* code.
@@ -174,7 +181,7 @@ class _TicketScreenState extends State<TicketScreen> {
 
                 SizedBox(height: kGapXL),
 
-                SoldBar(sold: 142, total: 200),
+                SoldBar(sold: sold, total: 200),
                 SizedBox(height: kGapXL),
 
                 Tiers(
@@ -220,7 +227,7 @@ class _TicketScreenState extends State<TicketScreen> {
                 TotalRow(total: '${money(total)} IQD'),
                 SizedBox(height: kGapXL),
 
-                BookButton(),
+                BookButton(onPressed: book),
               ],
             ),
           ),
@@ -280,25 +287,31 @@ class DividerContainer extends StatelessWidget {
 class BookButton extends StatelessWidget {
   const BookButton({
     super.key,
+    required this.onPressed,
   });
+
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    // A real button, as wide as the Container was.
+    return SizedBox(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(vertical: 16),
-      decoration: BoxDecoration(
-        color: kAccent,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Text(
-        "Book now",
-        style: TextStyle(
-          fontSize: 16,
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: kAccent,
+          foregroundColor: Colors.white,
+          padding: EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          textStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ),
         ),
-        textAlign: TextAlign.center,
+        child: Text("Book now"),
       ),
     );
   }

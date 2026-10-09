@@ -1,7 +1,7 @@
 // End of lesson 9.7 P1 -- "Book Always Answers".
 //
-// Book is always tappable. book() refuses with a SnackBar when the policy is
-// not accepted, and a booking moves the seats bar and can be undone.
+// Book is always tappable, and it always answers. book() says why it
+// refuses -- the policy, or not enough seats -- and a booking can be undone.
 
 import 'package:flutter/material.dart';
 
@@ -115,9 +115,18 @@ class _TicketScreenState extends State<TicketScreen> {
   }
 
   void book() {
+    // One answer at a time: a new tap replaces whatever is showing.
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     if (!acceptedPolicy) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please accept the refund policy.')),
+      );
+      return;
+    }
+
+    if (sold + quantity > 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Only ${200 - sold} seats left.')),
       );
       return;
     }
