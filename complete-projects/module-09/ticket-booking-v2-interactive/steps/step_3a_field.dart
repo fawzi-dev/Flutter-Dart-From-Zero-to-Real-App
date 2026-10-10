@@ -1,6 +1,8 @@
-// End of lesson 9.6 P4 -- "A Reminder Has Two States".
+// End of lesson 9.6 P1 -- "A Place to Type".
 //
-// A SwitchListTile under Delivery. Same shape: value, onChanged, setState.
+// The concert has a discount code, and the ticket has nowhere to type it.
+// A TextField, dressed with InputDecoration, beside an Apply button that
+// does nothing yet. Reading what was typed is 9.6 P2.
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -32,14 +34,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tickets',
-      // The text field, the switch, the checkbox and the dialog all take
-      // their colour from here. Without it, they are purple.
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: kAccent),
-      ),
       home: TicketScreen(),
     );
   }
@@ -59,26 +56,9 @@ class _TicketScreenState extends State<TicketScreen> {
   bool isFavourite = false;
   int sold = 142;
 
-  final codeController = TextEditingController();
-  String? codeError;
-  int discountPercent = 0;
-
-  String delivery = 'Email';
-  bool remindMe = true;
-
-  @override
-  void dispose() {
-    // Create a controller, dispose the controller.
-    codeController.dispose();
-    super.dispose();
-  }
-
-  /// Derived, never stored: worked out on every build, so it can never be
-  /// out of date. 9.6 P2 gave it one more input.
-  int get total {
-    final gross = prices[tierIndex] * quantity;
-    return gross - (gross * discountPercent ~/ 100);
-  }
+  /// Derived, never stored: worked out from tier and quantity on every build,
+  /// so it can never be out of date.
+  int get total => prices[tierIndex] * quantity;
 
   void addTicket() {
     if (quantity < 8) {
@@ -100,23 +80,6 @@ class _TicketScreenState extends State<TicketScreen> {
     // Never sell a seat that does not exist: a guard clause again.
     if (sold + quantity > 200) return;
     setState(() => sold += quantity);
-  }
-
-  /// Two guards: is it a code at all, and is it *the* code.
-  void applyCode() {
-    final code = codeController.text.trim().toUpperCase();
-    setState(() {
-      if (code.isEmpty) {
-        codeError = 'Type a code first';
-        discountPercent = 0;
-      } else if (code != 'CITADEL20') {
-        codeError = "That code isn't valid";
-        discountPercent = 0;
-      } else {
-        codeError = null;
-        discountPercent = 20;
-      }
-    });
   }
 
   @override
@@ -182,61 +145,24 @@ class _TicketScreenState extends State<TicketScreen> {
                 ),
                 SizedBox(height: kGapXL),
 
-                // Typed by a human, so it might be wrong.
                 Row(
                   children: [
                     Expanded(
                       child: TextField(
-                        controller: codeController,
                         decoration: InputDecoration(
                           labelText: 'Discount code',
                           hintText: 'e.g. CITADEL20',
-                          // null means no error is shown.
-                          errorText: codeError,
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
                     SizedBox(width: kGapM),
                     ElevatedButton(
-                      onPressed: applyCode,
+                      // Awake, but empty (9.1 P1). 9.6 P2 reads the code.
+                      onPressed: () {},
                       child: Text('Apply'),
                     ),
                   ],
-                ),
-                SizedBox(height: kGapXL),
-
-                // Value in, onChanged out, setState in between.
-                Row(
-                  children: [
-                    Text('Delivery', style: TextStyle(color: kMuted)),
-                    SizedBox(width: kGapM),
-                    DropdownButton<String>(
-                      value: delivery,
-                      underline: SizedBox.shrink(),
-                      items: [
-                        DropdownMenuItem(value: 'Email', child: Text('Email')),
-                        DropdownMenuItem(value: 'SMS', child: Text('SMS')),
-                        DropdownMenuItem(
-                          value: 'At venue',
-                          child: Text('At venue'),
-                        ),
-                      ],
-                      onChanged: (choice) {
-                        if (choice == null) return;
-                        setState(() => delivery = choice);
-                      },
-                    ),
-                  ],
-                ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    'Remind me the day before',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  value: remindMe,
-                  onChanged: (v) => setState(() => remindMe = v),
                 ),
                 SizedBox(height: kGapXL),
 

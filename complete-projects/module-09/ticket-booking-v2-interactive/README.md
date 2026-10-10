@@ -17,15 +17,16 @@ flutter run
 | 9.5 P2 · One word, and it comes alive | `StatefulWidget` + `setState` make the quantity, the heart and the total work. |
 | 9.5 P3 · Pick a tier | The chips become real choices: a `prices` list, `tierIndex` in State, `intl` for the commas, `void Function(int)`. |
 | 9.5 P4 · Book works | Book becomes a real `ElevatedButton`, `sold` is State, and booking moves the bar, with a guard against overselling. Every control now works. |
-| 9.6 P1 · TextField and controller | A decorated discount field reads its controller when Apply is tapped. The controller is disposed with the screen. |
-| 9.6 P2 · The discount code | `applyCode`, two guards, `errorText`, the app theme and the discounted total. |
-| 9.6 P3 · Dropdown | Delivery comes from three valid choices. |
-| 9.6 P4 · Switch | The customer can turn the reminder on or off. |
-| 9.6 P5 · Checkbox | Book stays grey until the policy is accepted. |
+| 9.6 P1 · A place to type | A discount `TextField` with label, hint and border, beside an Apply that does nothing yet. |
+| 9.6 P2 · Reading what they typed | A `TextEditingController` in the State; Apply prints the code; `dispose`. |
+| 9.6 P3 · The discount code | `applyCode`, two guards, `errorText`, the app theme and the discounted total. |
+| 9.6 P4 · Dropdown | Delivery comes from three valid choices. |
+| 9.6 P5 · Switch | The customer can turn the reminder on or off. |
+| 9.6 P6 · Checkbox | Book stays grey until the policy is accepted. |
 | 9.7 P1 · SnackBar | Book explains both refusals and offers UNDO. |
 | 9.7 P2 · Dialog | Start over asks before clearing the ticket. |
 
-The ticket card runs **in one go**, 9.5 to 9.7 — ten videos in the same
+The ticket card runs **in one go**, 9.5 to 9.7 — eleven videos in the same
 project. Every concept it needs is taught first on the state playground (9.1 to
 9.3), and Dicee (9.4) comes just before it.
 

@@ -1,4 +1,4 @@
-// End of lesson 9.6 P2 -- "The Discount Code".
+// End of lesson 9.6 P3 -- "The Discount Code".
 //
 // The app takes its colours from kAccent, and a discount code is checked with
 // two guards. The total getter reads one more field, and nothing else on the
@@ -73,7 +73,7 @@ class _TicketScreenState extends State<TicketScreen> {
   }
 
   /// Derived, never stored: worked out on every build, so it can never be
-  /// out of date. 9.6 P2 gives it one more input.
+  /// out of date. 9.6 P3 gives it one more input.
   int get total {
     final gross = prices[tierIndex] * quantity;
     return gross - (gross * discountPercent ~/ 100);

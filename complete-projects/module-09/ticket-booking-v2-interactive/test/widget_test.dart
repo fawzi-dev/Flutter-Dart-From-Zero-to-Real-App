@@ -57,7 +57,7 @@ void main() {
     expect(find.text('190,000 IQD'), findsOneWidget);
   });
 
-  testWidgets('9.6 P2 — the code is validated and really changes the price',
+  testWidgets('9.6 P3 — the code is validated and really changes the price',
       (tester) async {
     await pump(tester);
 
@@ -74,7 +74,7 @@ void main() {
     expect(find.text('96,000 IQD'), findsOneWidget);
   });
 
-  testWidgets('9.6 P3 — delivery stays within the fixed choices',
+  testWidgets('9.6 P4 — delivery stays within the fixed choices',
       (tester) async {
     await pump(tester);
     final dropdown = find.byType(DropdownButton<String>);
@@ -88,7 +88,7 @@ void main() {
     expect(tester.widget<DropdownButton<String>>(dropdown).value, 'SMS');
   });
 
-  testWidgets('9.6 P4 — reminder switch updates its stored value',
+  testWidgets('9.6 P5 — reminder switch updates its stored value',
       (tester) async {
     await pump(tester);
     final reminder = find.byType(SwitchListTile);
@@ -100,7 +100,7 @@ void main() {
     expect(tester.widget<SwitchListTile>(reminder).value, isFalse);
   });
 
-  testWidgets('9.6 P5 — policy agreement starts unchecked',
+  testWidgets('9.6 P6 — policy agreement starts unchecked',
       (tester) async {
     await pump(tester);
     final policy = find.byType(CheckboxListTile);

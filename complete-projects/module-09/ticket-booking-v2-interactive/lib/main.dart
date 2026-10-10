@@ -8,9 +8,10 @@
 //   9.5 P2  StatefulWidget + setState: quantity, the heart, the total getter
 //   9.5 P3  pick a tier: the prices list, tierIndex, intl's NumberFormat
 //   9.5 P4  Book is a real ElevatedButton; sold in State; the seats guard
-//   9.6 P1  discount TextField, controller and dispose; Apply prints the text
-//   9.6 P2  theme, discount guards, errorText and the discounted total
-//   9.6 P3  delivery dropdown; P4 reminder switch; P5 policy checkbox
+//   9.6 P1  a discount TextField, dressed with InputDecoration, beside Apply
+//   9.6 P2  the controller and dispose; Apply prints what was typed
+//   9.6 P3  theme, discount guards, errorText and the discounted total
+//   9.6 P4  delivery dropdown; P5 reminder switch; P6 policy checkbox
 //   9.7 P1  Book always answers: two refusals, and a booking with UNDO
 //   9.7 P2  Start over asks first: an AlertDialog that hands back a bool
 //
@@ -89,7 +90,7 @@ class _TicketScreenState extends State<TicketScreen> {
   }
 
   /// Derived, never stored: worked out on every build, so it can never be
-  /// out of date. 9.6 P2 gave it one more input.
+  /// out of date. 9.6 P3 gave it one more input.
   int get total {
     final gross = prices[tierIndex] * quantity;
     return gross - (gross * discountPercent ~/ 100);

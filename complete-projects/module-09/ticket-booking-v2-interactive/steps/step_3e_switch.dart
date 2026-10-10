@@ -1,6 +1,6 @@
-// End of lesson 9.6 P3 -- "Delivery Is a Choice, Not a Sentence".
+// End of lesson 9.6 P5 -- "A Reminder Has Two States".
 //
-// Delivery comes from a fixed list, so nobody can type Emial.
+// A SwitchListTile under Delivery. Same shape: value, onChanged, setState.
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -64,6 +64,7 @@ class _TicketScreenState extends State<TicketScreen> {
   int discountPercent = 0;
 
   String delivery = 'Email';
+  bool remindMe = true;
 
   @override
   void dispose() {
@@ -73,7 +74,7 @@ class _TicketScreenState extends State<TicketScreen> {
   }
 
   /// Derived, never stored: worked out on every build, so it can never be
-  /// out of date. 9.6 P2 gave it one more input.
+  /// out of date. 9.6 P3 gave it one more input.
   int get total {
     final gross = prices[tierIndex] * quantity;
     return gross - (gross * discountPercent ~/ 100);
@@ -227,6 +228,15 @@ class _TicketScreenState extends State<TicketScreen> {
                       },
                     ),
                   ],
+                ),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    'Remind me the day before',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  value: remindMe,
+                  onChanged: (v) => setState(() => remindMe = v),
                 ),
                 SizedBox(height: kGapXL),
 
