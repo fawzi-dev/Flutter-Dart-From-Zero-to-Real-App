@@ -3,10 +3,10 @@
 Module 9 is not a screen *growing*, the way Module 8 was. It is one screen
 **gaining behaviour**. So the checkpoints mark what the screen can *do*.
 
-Every file starts from the Module 8 screen exactly as it was built in the videos —
+Every file starts from the Module 8 screen exactly as it was built on camera —
 `EvenDetails`, `DividerContainer`, `Tiers`, `StepButton` — and adds only what
 its lesson teaches. Each file is `lib/main.dart` as it stood at the **end** of
-one lesson, and its header says what that lesson added.
+one video, and its header lists that video's beats in order.
 
 | File | End of | What it is |
 |---|---|---|
@@ -29,9 +29,9 @@ The ticket card runs in one go, 9.5 to 9.7. The concept lessons before it —
 ## Why step 1 ends broken
 
 9.5 P1 makes the screen listen, then hands `quantity` to plus and minus the
-way the counter did in 9.2: as a local inside `build`. You will recognise the
-bug in seconds, because you have already met it — and 9.5 P2 fixes it with the
-word you learned on the counter. **Run the broken version** before 9.5 P2.
+way the counter did in 9.2: as a local inside `build`. Students recognise the
+bug in seconds, because they have already met it — and 9.5 P2 fixes it with the
+word they learned on the counter. **Run the broken version** before 9.5 P2.
 
 ## The diffs worth doing
 

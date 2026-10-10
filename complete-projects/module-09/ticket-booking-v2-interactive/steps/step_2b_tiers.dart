@@ -59,10 +59,20 @@ class _TicketScreenState extends State<TicketScreen> {
   /// build, so it can never be out of date.
   int get total => prices[tierIndex] * quantity;
 
-  void changeQuantity(int by) {
-    final next = quantity + by;
-    if (next < 1 || next > 8) return; // a guard clause, lesson 2.9
-    setState(() => quantity = next);
+  void addTicket() {
+    if (quantity < 8) {
+      setState(() {
+        quantity++;
+      });
+    }
+  }
+
+  void removeTicket() {
+    if (quantity > 1) {
+      setState(() {
+        quantity--;
+      });
+    }
   }
 
   @override
@@ -123,8 +133,8 @@ class _TicketScreenState extends State<TicketScreen> {
 
                 QuantityRow(
                   qty: quantity,
-                  onMinus: () => changeQuantity(-1),
-                  onPlus: () => changeQuantity(1),
+                  onMinus: removeTicket,
+                  onPlus: addTicket,
                 ),
                 SizedBox(height: kGapXL),
 
