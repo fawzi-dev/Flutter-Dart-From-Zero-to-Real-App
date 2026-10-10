@@ -14,8 +14,9 @@ flutter run
 | Lesson | The card gains |
 |--------|----------------|
 | 9.5 P1 · The ticket card listens | The heart and steppers become `IconButton`s; the screen hears taps. |
-| 9.5 P2 · One word, and it comes alive | `StatefulWidget` + `setState` make tier, quantity, heart and total work. |
-| 9.5 P3 · Book works | Book becomes a real `ElevatedButton`, `sold` is State, and booking moves the bar, with a guard against overselling. Every control now works. |
+| 9.5 P2 · One word, and it comes alive | `StatefulWidget` + `setState` make the quantity, the heart and the total work. |
+| 9.5 P3 · Pick a tier | The chips become real choices: a `prices` list, `tierIndex` in State, `intl` for the commas, `void Function(int)`. |
+| 9.5 P4 · Book works | Book becomes a real `ElevatedButton`, `sold` is State, and booking moves the bar, with a guard against overselling. Every control now works. |
 | 9.6 P1 · TextField and controller | A decorated discount field reads its controller when Apply is tapped. The controller is disposed with the screen. |
 | 9.6 P2 · The discount code | `applyCode`, two guards, `errorText`, the app theme and the discounted total. |
 | 9.6 P3 · Dropdown | Delivery comes from three valid choices. |
@@ -67,13 +68,12 @@ then gives the screen memory.
 handed values and a callback. Only the widget that holds the truth gets
 converted. Default to Stateless.
 
-**`Tier` is a small data class.** It keeps each ticket name beside its price.
-The dropdown lesson applies the fixed-choice idea to delivery methods: a
-customer can select only an answer the app supports.
+**The prices are one list, and the State keeps a number.** `tierIndex` is 0,
+1 or 2, and every chip, the price and the total read it, so they can't
+disagree.
 
-**`money()` is hand-written**, not a package. Module 2's loop and Module 1's
-strings doing a small real job — and a reminder that not every problem needs a
-dependency.
+**`money()` is one line**, `NumberFormat('#,###')` from the `intl` package.
+The commas are not the lesson, so a package does them.
 
 ## Scope
 

@@ -1,0 +1,542 @@
+// End of lesson 9.5 P4 -- "Book Works".
+//
+// The last dead control on the card comes alive, and the card is finished:
+// Book is a real ElevatedButton, the seats sold live in the State, and
+// booking moves the bar. Nothing new is taught -- buttons from 9.1, setState
+// from 9.3, a guard clause from 2.9.
+
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+// The palette. Five colours, named once, used everywhere.
+const kInk = Color(0xFF141220);
+const kMuted = Color(0xFF6E6A80);
+const kAccent = Color(0xFFB4453A);
+const kSurface = Color(0xFFF7F5F2);
+const kLine = Color(0xFFE4E0DA);
+// The spacing scale. Four numbers, reused everywhere.
+const kGapS = 8.0;
+const kGapM = 12.0;
+const kGapL = 24.0;
+const kGapXL = 32.0;
+
+/// The three ticket prices, in the same order as the chips.
+const prices = [35000, 60000, 95000];
+
+/// 120000 becomes '120,000'. The intl package does the commas.
+String money(int amount) => NumberFormat('#,###').format(amount);
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Tickets',
+      home: TicketScreen(),
+    );
+  }
+}
+
+class TicketScreen extends StatefulWidget {
+  const TicketScreen({super.key});
+
+  @override
+  State<TicketScreen> createState() => _TicketScreenState();
+}
+
+class _TicketScreenState extends State<TicketScreen> {
+  // Everything a human can change lives here, in one place.
+  int tierIndex = 1; // VIP
+  int quantity = 2;
+  bool isFavourite = false;
+  int sold = 142;
+
+  /// Derived, never stored: worked out from tier and quantity on every build,
+  /// so it can never be out of date.
+  int get total => prices[tierIndex] * quantity;
+
+  void changeQuantity(int by) {
+    final next = quantity + by;
+    if (next < 1 || next > 8) return; // a guard clause, lesson 2.9
+    setState(() => quantity = next);
+  }
+
+  void book() {
+    // Never sell a seat that does not exist: a guard clause again.
+    if (sold + quantity > 200) return;
+    setState(() => sold += quantity);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kSurface,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(kGapL),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                EventPoster(),
+                SizedBox(height: kGapXL),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Night at the Citadel — Open Air Summer Serie",
+                        style: TextStyle(
+                          color: kInk,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(
+                      width: kGapS,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() => isFavourite = !isFavourite);
+                      },
+                      // build remembers nothing. It reads the field and draws.
+                      icon: Icon(
+                        isFavourite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavourite ? kAccent : kMuted,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: kGapS),
+                EvenDetails(),
+
+                SizedBox(height: kGapXL),
+
+                SoldBar(sold: sold, total: 200),
+                SizedBox(height: kGapXL),
+
+                Tiers(
+                  selected: tierIndex,
+                  onChanged: (i) => setState(() => tierIndex = i),
+                ),
+                SizedBox(height: kGapXL),
+
+                QuantityRow(
+                  qty: quantity,
+                  onMinus: () => changeQuantity(-1),
+                  onPlus: () => changeQuantity(1),
+                ),
+                SizedBox(height: kGapXL),
+
+                DividerContainer(),
+                SizedBox(height: kGapXL),
+
+                TotalRow(total: '${money(total)} IQD'),
+                SizedBox(height: kGapXL),
+
+                BookButton(onPressed: book),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EvenDetails extends StatelessWidget {
+  const EvenDetails({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "SAT  ·  14 SEP  ·  8:00 PM",
+          style: TextStyle(
+            color: kMuted,
+            fontSize: 12,
+            letterSpacing: 2,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        SizedBox(height: kGapS),
+        Text(
+          'An open-air night in the old amphitheatre, with the city '
+          'walls behind the stage and doors opening an hour early.',
+          style: TextStyle(fontSize: 14, height: 1.45, color: kMuted),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
+}
+
+class DividerContainer extends StatelessWidget {
+  const DividerContainer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: kLine,
+      height: 2,
+      width: double.infinity,
+    );
+  }
+}
+
+class BookButton extends StatelessWidget {
+  const BookButton({
+    super.key,
+    required this.onPressed,
+  });
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    // A real button, as wide as the Container was.
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: kAccent,
+          foregroundColor: Colors.white,
+          padding: EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          textStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        child: Text("Book now"),
+      ),
+    );
+  }
+}
+
+class TotalRow extends StatelessWidget {
+  const TotalRow({
+    super.key,
+    required this.total,
+  });
+
+  final String total;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Total",
+          style: TextStyle(fontSize: 15, color: kMuted),
+        ),
+        Text(
+          total,
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: kInk),
+        ),
+      ],
+    );
+  }
+}
+
+class QuantityRow extends StatelessWidget {
+  const QuantityRow({
+    super.key,
+    required this.qty,
+    required this.onMinus,
+    required this.onPlus,
+  });
+
+  final int qty;
+
+  // A function that takes nothing and returns nothing. The row doesn't decide
+  // what a tap means: it hands the tap to whoever built it.
+  final VoidCallback onMinus;
+  final VoidCallback onPlus;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Tickets",
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        Row(
+          children: [
+            StepButton(
+              icon: Icons.remove,
+              onPressed: onMinus,
+            ),
+
+            SizedBox(
+              width: 48,
+              child: Text(
+                qty.toString(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+
+            StepButton(icon: Icons.add, onPressed: onPlus),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class StepButton extends StatelessWidget {
+  const StepButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 36,
+      height: 36,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: kLine),
+      ),
+      // A real button now, ripple and all. Handed over bare: no brackets.
+      // IconButton brings its own padding, so the icon shrinks to fit.
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon, size: 18),
+      ),
+    );
+  }
+}
+
+class Tiers extends StatelessWidget {
+  const Tiers({
+    super.key,
+    required this.selected,
+    required this.onChanged,
+  });
+
+  // Which chip is picked: 0, 1 or 2.
+  final int selected;
+
+  // A VoidCallback is handed nothing. This row has to say WHICH chip was
+  // tapped, so its function is handed the chip's number.
+  final void Function(int) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      spacing: kGapS,
+      children: [
+        Expanded(
+          // Object 1
+          child: TierChip(
+            name: "STANDARD",
+            price: money(prices[0]),
+            isSelected: selected == 0,
+            onTap: () => onChanged(0),
+          ),
+        ),
+        // Object 2
+        Expanded(
+          child: TierChip(
+            name: "VIP",
+            price: money(prices[1]),
+            isSelected: selected == 1,
+            onTap: () => onChanged(1),
+          ),
+        ),
+        // Object 3
+        Expanded(
+          child: TierChip(
+            name: "BACKSTAGE",
+            price: money(prices[2]),
+            isSelected: selected == 2,
+            onTap: () => onChanged(2),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class TierChip extends StatelessWidget {
+  const TierChip({
+    super.key,
+    required this.name,
+    required this.price,
+    this.isSelected = false,
+    required this.onTap,
+  });
+
+  final String name;
+  final String price;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    // The chip reports the tap. The screen decides what it means.
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      // Ink, not Container: a Container's colour would cover the ripple.
+      child: Ink(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected ? kAccent : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: kLine),
+        ),
+        child: Column(
+          children: [
+            Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: isSelected ? Colors.white : kInk,
+              ),
+            ),
+            Text(
+              price,
+              style: TextStyle(
+                color: isSelected ? Colors.white : kMuted,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SoldBar extends StatelessWidget {
+  const SoldBar({super.key, required this.sold, required this.total});
+
+  final int sold;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    final remaining = total - sold;
+    return Row(
+      children: [
+        Text(
+          "$sold sold",
+          style: TextStyle(color: kMuted, fontSize: 12),
+        ),
+        SizedBox(
+          width: kGapS,
+        ),
+        Expanded(
+          flex: sold,
+          child: Container(
+            height: 6,
+            decoration: BoxDecoration(
+              color: kAccent,
+              borderRadius: BorderRadius.circular(3),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: remaining,
+          child: Container(
+            height: 6,
+            decoration: BoxDecoration(
+              color: kLine,
+              borderRadius: BorderRadius.circular(3),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: kGapS,
+        ),
+        Text(
+          "$total seats",
+          style: TextStyle(color: kMuted, fontSize: 12),
+        ),
+      ],
+    );
+  }
+}
+
+class EventPoster extends StatelessWidget {
+  const EventPoster({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image.asset(
+            "assets/event.jpg",
+            height: 210,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+        ),
+
+        Positioned(
+          top: kGapM,
+          left: kGapM,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: kAccent,
+            ),
+            child: Text(
+              "FEW LEFT",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 10,
+                letterSpacing: 2,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

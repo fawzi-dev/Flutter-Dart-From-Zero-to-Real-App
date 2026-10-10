@@ -1,11 +1,11 @@
-// End of lesson 9.5 P3 -- "Book Works".
+// End of lesson 9.5 P3 -- "Pick a Tier".
 //
-// The last dead control on the card comes alive, and the card is finished:
-// Book is a real ElevatedButton, the seats sold live in the State, and
-// booking moves the bar. Nothing new is taught -- buttons from 9.1, setState
-// from 9.3, a guard clause from 2.9.
+// The chips stop being pictures. The prices are a list, the State remembers
+// which chip is picked (tierIndex), and the total reads the picked price. The
+// intl package puts the commas in.
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,38 +23,11 @@ const kGapM = 12.0;
 const kGapL = 24.0;
 const kGapXL = 32.0;
 
-/// One ticket type: a name and a price. Two facts about one thing, so it is
-/// a class -- Module 5's data-class recipe.
-class Tier {
-  final String name;
-  final int price;
+/// The three ticket prices, in the same order as the chips.
+const prices = [35000, 60000, 95000];
 
-  const Tier({required this.name, required this.price});
-}
-
-/// The three tiers the event sells. A list of objects, like Module 5's quiz.
-const tiers = [
-  Tier(name: "STANDARD", price: 35000),
-  Tier(name: "VIP", price: 60000),
-  Tier(name: "BACKSTAGE", price: 95000),
-];
-
-/// 120000 becomes '120,000'. A loop, a remainder and string building --
-/// Modules 1 and 2, doing a small real job.
-String money(int amount) {
-  final digits = amount.toString();
-  var out = '';
-
-  for (var i = 0; i < digits.length; i++) {
-    // Every third digit from the right gets a comma in front of it.
-    if (i > 0 && (digits.length - i) % 3 == 0) {
-      out = '$out,';
-    }
-    out = '$out${digits[i]}';
-  }
-
-  return out;
-}
+/// 120000 becomes '120,000'. The intl package does the commas.
+String money(int amount) => NumberFormat('#,###').format(amount);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -78,25 +51,18 @@ class TicketScreen extends StatefulWidget {
 
 class _TicketScreenState extends State<TicketScreen> {
   // Everything a human can change lives here, in one place.
-  Tier tier = tiers[1]; // VIP
+  int tierIndex = 1; // VIP
   int quantity = 2;
   bool isFavourite = false;
-  int sold = 142;
 
-  /// Derived, never stored: worked out from tier and quantity on every build,
-  /// so it can never be out of date.
-  int get total => tier.price * quantity;
+  /// Derived, never stored: worked out from the tier and quantity on every
+  /// build, so it can never be out of date.
+  int get total => prices[tierIndex] * quantity;
 
   void changeQuantity(int by) {
     final next = quantity + by;
     if (next < 1 || next > 8) return; // a guard clause, lesson 2.9
     setState(() => quantity = next);
-  }
-
-  void book() {
-    // Never sell a seat that does not exist: a guard clause again.
-    if (sold + quantity > 200) return;
-    setState(() => sold += quantity);
   }
 
   @override
@@ -146,12 +112,12 @@ class _TicketScreenState extends State<TicketScreen> {
 
                 SizedBox(height: kGapXL),
 
-                SoldBar(sold: sold, total: 200),
+                SoldBar(sold: 142, total: 200),
                 SizedBox(height: kGapXL),
 
                 Tiers(
-                  selected: tier,
-                  onChanged: (t) => setState(() => tier = t),
+                  selected: tierIndex,
+                  onChanged: (i) => setState(() => tierIndex = i),
                 ),
                 SizedBox(height: kGapXL),
 
@@ -168,7 +134,7 @@ class _TicketScreenState extends State<TicketScreen> {
                 TotalRow(total: '${money(total)} IQD'),
                 SizedBox(height: kGapXL),
 
-                BookButton(onPressed: book),
+                BookButton(),
               ],
             ),
           ),
@@ -228,31 +194,25 @@ class DividerContainer extends StatelessWidget {
 class BookButton extends StatelessWidget {
   const BookButton({
     super.key,
-    required this.onPressed,
   });
-
-  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    // A real button, as wide as the Container was.
-    return SizedBox(
+    return Container(
       width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: kAccent,
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-          textStyle: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-          ),
+      padding: EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        color: kAccent,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Text(
+        "Book now",
+        style: TextStyle(
+          fontSize: 16,
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
         ),
-        child: Text("Book now"),
+        textAlign: TextAlign.center,
       ),
     );
   }
@@ -375,31 +335,46 @@ class Tiers extends StatelessWidget {
     required this.onChanged,
   });
 
-  final Tier selected;
+  // Which chip is picked: 0, 1 or 2.
+  final int selected;
 
-  // A VoidCallback is handed nothing. This row has to say WHICH tier was
-  // tapped, so its function is handed one.
-  final void Function(Tier) onChanged;
+  // A VoidCallback is handed nothing. This row has to say WHICH chip was
+  // tapped, so its function is handed the chip's number.
+  final void Function(int) onChanged;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       spacing: kGapS,
       children: [
-        Expanded(child: chipFor(tiers[0])),
-        Expanded(child: chipFor(tiers[1])),
-        Expanded(child: chipFor(tiers[2])),
+        Expanded(
+          // Object 1
+          child: TierChip(
+            name: "STANDARD",
+            price: money(prices[0]),
+            isSelected: selected == 0,
+            onTap: () => onChanged(0),
+          ),
+        ),
+        // Object 2
+        Expanded(
+          child: TierChip(
+            name: "VIP",
+            price: money(prices[1]),
+            isSelected: selected == 1,
+            onTap: () => onChanged(1),
+          ),
+        ),
+        // Object 3
+        Expanded(
+          child: TierChip(
+            name: "BACKSTAGE",
+            price: money(prices[2]),
+            isSelected: selected == 2,
+            onTap: () => onChanged(2),
+          ),
+        ),
       ],
-    );
-  }
-
-  /// A method that returns a widget: one chip, built from one Tier.
-  Widget chipFor(Tier tier) {
-    return TierChip(
-      name: tier.name,
-      price: money(tier.price),
-      isSelected: tier.name == selected.name,
-      onTap: () => onChanged(tier),
     );
   }
 }

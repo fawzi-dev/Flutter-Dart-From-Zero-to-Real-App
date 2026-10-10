@@ -1,9 +1,8 @@
 // End of lesson 9.5 P2 -- "One Word, and It Comes Alive".
 //
-// The counter's fix, on the ticket card. TicketScreen is Stateful; tier,
-// quantity and isFavourite are fields of the State; every change is inside
-// setState. The tiers come from real data, so their prices are worked out,
-// not typed -- and the total is a getter, so nothing ever updates it by hand.
+// The counter's fix, on the ticket card -- and only that. TicketScreen is
+// Stateful, quantity and isFavourite are fields of the State, every change is
+// inside setState, and the total is a getter, so nothing updates it by hand.
 
 import 'package:flutter/material.dart';
 
@@ -22,39 +21,6 @@ const kGapS = 8.0;
 const kGapM = 12.0;
 const kGapL = 24.0;
 const kGapXL = 32.0;
-
-/// One ticket type: a name and a price. Two facts about one thing, so it is
-/// a class -- Module 5's data-class recipe.
-class Tier {
-  final String name;
-  final int price;
-
-  const Tier({required this.name, required this.price});
-}
-
-/// The three tiers the event sells. A list of objects, like Module 5's quiz.
-const tiers = [
-  Tier(name: "STANDARD", price: 35000),
-  Tier(name: "VIP", price: 60000),
-  Tier(name: "BACKSTAGE", price: 95000),
-];
-
-/// 120000 becomes '120,000'. A loop, a remainder and string building --
-/// Modules 1 and 2, doing a small real job.
-String money(int amount) {
-  final digits = amount.toString();
-  var out = '';
-
-  for (var i = 0; i < digits.length; i++) {
-    // Every third digit from the right gets a comma in front of it.
-    if (i > 0 && (digits.length - i) % 3 == 0) {
-      out = '$out,';
-    }
-    out = '$out${digits[i]}';
-  }
-
-  return out;
-}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -78,13 +44,12 @@ class TicketScreen extends StatefulWidget {
 
 class _TicketScreenState extends State<TicketScreen> {
   // Everything a human can change lives here, in one place.
-  Tier tier = tiers[1]; // VIP
   int quantity = 2;
   bool isFavourite = false;
 
-  /// Derived, never stored: worked out from tier and quantity on every build,
-  /// so it can never be out of date.
-  int get total => tier.price * quantity;
+  /// Derived, never stored: worked out from quantity on every build, so it
+  /// can never be out of date. VIP only for now; 9.5 P3 adds the choice.
+  int get total => 60000 * quantity;
 
   void changeQuantity(int by) {
     final next = quantity + by;
@@ -142,10 +107,7 @@ class _TicketScreenState extends State<TicketScreen> {
                 SoldBar(sold: 142, total: 200),
                 SizedBox(height: kGapXL),
 
-                Tiers(
-                  selected: tier,
-                  onChanged: (t) => setState(() => tier = t),
-                ),
+                Tiers(),
                 SizedBox(height: kGapXL),
 
                 QuantityRow(
@@ -158,7 +120,7 @@ class _TicketScreenState extends State<TicketScreen> {
                 DividerContainer(),
                 SizedBox(height: kGapXL),
 
-                TotalRow(total: '${money(total)} IQD'),
+                TotalRow(total: '$total IQD'),
                 SizedBox(height: kGapXL),
 
                 BookButton(),
@@ -358,35 +320,36 @@ class StepButton extends StatelessWidget {
 class Tiers extends StatelessWidget {
   const Tiers({
     super.key,
-    required this.selected,
-    required this.onChanged,
   });
-
-  final Tier selected;
-
-  // A VoidCallback is handed nothing. This row has to say WHICH tier was
-  // tapped, so its function is handed one.
-  final void Function(Tier) onChanged;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       spacing: kGapS,
       children: [
-        Expanded(child: chipFor(tiers[0])),
-        Expanded(child: chipFor(tiers[1])),
-        Expanded(child: chipFor(tiers[2])),
+        Expanded(
+          // Object 1
+          child: TierChip(
+            name: "STANDARD",
+            price: "35,00",
+          ),
+        ),
+        // Object 2
+        Expanded(
+          child: TierChip(
+            name: "VIP",
+            price: "60,00",
+            isSelected: true,
+          ),
+        ),
+        // Object 3
+        Expanded(
+          child: TierChip(
+            name: "BACKSTAGE",
+            price: "95,00",
+          ),
+        ),
       ],
-    );
-  }
-
-  /// A method that returns a widget: one chip, built from one Tier.
-  Widget chipFor(Tier tier) {
-    return TierChip(
-      name: tier.name,
-      price: money(tier.price),
-      isSelected: tier.name == selected.name,
-      onTap: () => onChanged(tier),
     );
   }
 }
@@ -397,49 +360,41 @@ class TierChip extends StatelessWidget {
     required this.name,
     required this.price,
     this.isSelected = false,
-    required this.onTap,
   });
 
   final String name;
   final String price;
   final bool isSelected;
-  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    // The chip reports the tap. The screen decides what it means.
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      // Ink, not Container: a Container's colour would cover the ripple.
-      child: Ink(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? kAccent : Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: kLine),
-        ),
-        child: Column(
-          children: [
-            Text(
-              name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                color: isSelected ? Colors.white : kInk,
-              ),
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      decoration: BoxDecoration(
+        color: isSelected ? kAccent : Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: kLine),
+      ),
+      child: Column(
+        children: [
+          Text(
+            name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: isSelected ? Colors.white : kInk,
             ),
-            Text(
-              price,
-              style: TextStyle(
-                color: isSelected ? Colors.white : kMuted,
-                fontSize: 12,
-              ),
+          ),
+          Text(
+            price,
+            style: TextStyle(
+              color: isSelected ? Colors.white : kMuted,
+              fontSize: 12,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -48,7 +48,7 @@ void main() {
     expect(find.text('60,000 IQD'), findsOneWidget);
   });
 
-  testWidgets('9.5 P2 — choosing a tier recomputes the total', (tester) async {
+  testWidgets('9.5 P3 — choosing a tier recomputes the total', (tester) async {
     await pump(tester);
 
     await tester.tap(find.text('BACKSTAGE'));
@@ -123,7 +123,7 @@ void main() {
     expect(find.text('142 sold'), findsOneWidget);
   });
 
-  testWidgets('9.5 P3 and 9.7 P1 — Book never sells a seat that does not exist',
+  testWidgets('9.5 P4 and 9.7 P1 — Book never sells a seat that does not exist',
       (tester) async {
     await pump(tester);
 

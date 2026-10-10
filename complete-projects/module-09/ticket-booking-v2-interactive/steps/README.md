@@ -11,8 +11,9 @@ one lesson, and its header says what that lesson added.
 | File | End of | What it is |
 |---|---|---|
 | `step_1_listening.dart` | **9.5 P1** | The screen hears taps; quantity still lives inside `build`. |
-| `step_2_alive.dart` | **9.5 P2** | State, tier data and the computed total make the ticket come alive. |
-| `step_2b_book.dart` | **9.5 P3** | Book is a real `ElevatedButton`, `sold` is State, booking moves the bar, and a guard stops overselling. Every control works; nothing new was taught. |
+| `step_2_alive.dart` | **9.5 P2** | State only: `quantity` and the heart in the State, the guard, and the total as a getter (VIP, no commas yet). |
+| `step_2b_tiers.dart` | **9.5 P3** | The tier chips become real choices: `prices`, `tierIndex`, `intl`'s `NumberFormat`, `InkWell` + `Ink`, `void Function(int)`. |
+| `step_2c_book.dart` | **9.5 P4** | Book is a real `ElevatedButton`, `sold` is State, booking moves the bar, and a guard stops overselling. Every control works; nothing new was taught. |
 | `step_3a_textfield.dart` | **9.6 P1** | Discount TextField, decoration, controller and `dispose`; Apply prints the text. |
 | `step_3b_discount.dart` | **9.6 P2** | Theme, `applyCode`, two guards, `errorText` and the discounted total. |
 | `step_3c_dropdown.dart` | **9.6 P3** | Delivery from a fixed list. |
@@ -40,10 +41,13 @@ every change wrapped in `setState`, and the total becomes a **computed getter**
 so it can never disagree with the quantity. Read the getter, then try to find
 the code that updates the price. There isn't any.
 
-**`step_2_alive.dart` → `step_2b_book.dart`** finishes the card: the last
+**`step_2_alive.dart` → `step_2b_tiers.dart`**: the chip prices become a
+list, the State remembers which chip is picked, and `intl` puts the commas in.
+
+**`step_2b_tiers.dart` → `step_2c_book.dart`** finishes the card: the last
 picture of a button becomes a button, and the seats bar reads State.
 
-**`step_2b_book.dart` → `step_3a_textfield.dart`** adds the decorated discount field, controller and matching `dispose`. **`step_3a_textfield.dart` → `step_3b_discount.dart`** adds validation, the theme and the new total. The next three checkpoints add one booking input
+**`step_2c_book.dart` → `step_3a_textfield.dart`** adds the decorated discount field, controller and matching `dispose`. **`step_3a_textfield.dart` → `step_3b_discount.dart`** adds validation, the theme and the new total. The next three checkpoints add one booking input
 per lesson: dropdown, switch, then checkbox — where Book is switched off
 until the person agrees.
 
