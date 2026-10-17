@@ -1,8 +1,13 @@
-# BMI Calculator — Module 9
+# BMI Calculator — Module 9 exercise, finished
 
-The completed BMI challenge is in `lib/main.dart`. Run it with `flutter run`.
+The finished exercise. The starter (`starter-projects/module-09/bmi-calculator/`)
+already has all of the UI; the exercise is the six state tasks listed at the
+top of `lib/main.dart`.
 
-The two inputs it needs, the `Slider` and the `SegmentedButton`, are taught
-beforehand in lessons 9.8 P2 and P3, on the state playground
-(`../state-playground/steps/step_6_slider.dart` and `step_7_segmented.dart`).
-This project is opened for the first time in the challenge, 9.9.
+```
+flutter pub get
+flutter run
+```
+
+`steps/` holds the solution in five snapshots, one per stretch of the solution
+videos 9.10 P1 and P2. See `steps/README.md`. `flutter test` checks the numbers.

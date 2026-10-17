@@ -1,13 +1,18 @@
-# BMI Calculator — Starter
+# BMI Calculator — Starter (Module 9 exercise)
 
-A BMI calculator built from your own small, reusable widgets — one screen, two views (Module 9).
+The whole UI is already here: the colours, the cards, the buttons, the scale
+and the result view. Every value is typed in, and nothing moves. Your job is
+the Module 9 part: give the screen a memory, in six tasks.
 
-## Your mission
-Full brief + rubric: `challenges/module-09/bmi-calculator.md` in this repo.
+The tasks are listed at the top of `lib/main.dart`. The full brief, with a
+check for each task, is `challenges/module-09/bmi-calculator.md`.
 
 ## Run it
+
 ```
 flutter pub get
 flutter run
 ```
-You should see an empty screen with a TODO in `lib/main.dart`. Everything visible in the finished app, **you** type.
+
+Tap Female, drag the slider, press Calculate: nothing happens yet. By the end
+of task 6, everything will.

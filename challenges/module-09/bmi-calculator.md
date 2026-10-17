@@ -1,49 +1,63 @@
-# Challenge — BMI Calculator
+# Exercise — BMI Calculator
 
-Your first screen built the way real screens are built: out of a handful of small, reusable widgets **you** make yourself. Same state loop as Dicee — change data, `setState`, screen matches — but now the UI is a *system* of named pieces, not a one-off layout.
+Module 9 is about state, so this exercise is about state. **The whole UI is
+already built for you**: the colours, the cards, the buttons, the scale and
+both views. Every value on it is typed in, and nothing moves. Your job is to
+give the screen a memory.
 
-**Starter:** `starter-projects/module-09/bmi-calculator/` — empty Scaffold only.
+**Starter:** `starter-projects/module-09/bmi-calculator/`. Run it first: tap
+Female, drag the slider, press Calculate. Nothing happens. By the end,
+everything will.
 
-## The product
-One screen with **two views**, swapped by a single `bool`:
+## What's already there
 
-**Input view**
-- A gender toggle (`SegmentedButton`: Male / Female)
-- A **height slider** (≈120–220 cm) with the current value shown large above it
-- A **weight stepper**: a big number with round `−` and `+` buttons either side
-- A big **Calculate BMI** button
+| Piece | What it does | You give it |
+|---|---|---|
+| `AppColors` | every colour, named once | nothing |
+| `enum Gender` | `male`, `female` | nothing |
+| `InputCard` | the white rounded card with a label | a label and a child |
+| `BigNumber` | a big number with its unit: 175 cm | the text to show |
+| `StepperButton` | the round − / + button | an icon and an `onPressed` |
+| `PrimaryButton` | the big full-width button | a label and an `onPressed` |
+| `ResultView` | the whole result screen | the `bmi`, and an `onRecalculate` |
+| `CategoryPill`, `BmiScale` | the coloured pill and the four-band scale | the category |
 
-**Result view** (shown after Calculate)
-- The BMI, huge, to one decimal place
-- A category pill — `Underweight` / `Normal` / `Overweight` / `Obese` (boundaries **18.5 / 25 / 30**) — tinted with that category's color
-- The signature piece: a **health-scale bar** (a colored gradient) with a **marker showing where this BMI lands**
-- A one-line, friendly interpretation
-- A **Re-calculate** button that swaps back to the input view
+You do not need to change any of these. You only connect them to state.
 
-## Requirements
-1. **Build it from your own reusable widget classes.** At minimum: an `InputCard` (the white rounded card, used for both height and weight), a `StepperButton` (the round button, used for **both** `−` and `+`), and a `PrimaryButton` (used for **both** Calculate and Re-calculate). Each takes what it needs as constructor parameters — and a callback where it does something. This is Module 7's `InfoCard`, grown up.
-2. **One color source of truth.** A single `AppColors` class names every color once; nothing in the widget tree uses a raw `Color(0x…)` or scattered `Colors.blue`. Change the accent in one place → the whole app re-tints.
-3. **Logic lives in plain Dart functions** — `String categoryFor(double bmi)`, `Color colorFor(double bmi)` — no widgets, no `setState` inside them. Boundaries chosen deliberately (what does *exactly* 25.0 say?).
-4. **Two views, one bool.** A `bool showResult` decides which view the body shows; Calculate sets it `true`, Re-calculate sets it `false` — all inside `setState`. No second file, no `Navigator` yet (that's Module 10 — this bool is a deliberate stand-in for it).
-5. **The marker's position is computed from the BMI.** Map the number onto the bar (`Stack` + `Alignment`). This is the one bit of "turn a value into a position" the module teaches.
+## Your six tasks
 
-## Rubric
-- [ ] The `−` and `+` buttons are the **same `StepperButton` class used twice** — zero copy-pasted widget blocks
-- [ ] Every color comes from `AppColors`; there are no stray color literals in the tree
-- [ ] `categoryFor` is a **pure function** — you could paste it into DartPad and test it with no Flutter at all
-- [ ] The marker lands in the right place: a BMI of ~22 sits in the green band, ~32 sits in the red
-- [ ] Calculate → result view, Re-calculate → back — driven by **one bool, inside `setState`**
+Do them in order. Each one has a check, so you know when it's right.
 
-## Hints (gated)
-- **Build order:** get the input view working with plain widgets first (gender, slider, steppers all visibly changing state) → wire Calculate + the `showResult` swap → build the result view → *then* pull the repeated pieces out into widget classes → *then* style everything through `AppColors`. Run at every step.
-- **It's all one pattern.** `SegmentedButton` has `onSelectionChanged`, `Slider` has `onChanged`, your stepper calls a callback you pass it — every one of them just `setState`s a field. Learn one, you know all (lessons 9.8 Parts 2 and 3).
-- **Value → position:** the bar covers a BMI range (say 15–40). Turn the BMI into a fraction from 0 to 1 (and `.clamp` it), then into `Alignment`'s −1 (far left) to 1 (far right). Feed that to an `Align` around the marker.
-- **No text fields here — on purpose.** You already hardened free-text input (`tryParse`, friendly errors, the hostile-user pass) in lesson 9.8 P1's temperature converter. This challenge does the *opposite*: inputs so constrained the user simply can't be wrong. Making bad input **impossible** is itself a design skill — a slider can't return `"abc"`.
+| # | Task | You practise | Check |
+|---|---|---|---|
+| 1 | Make `BmiScreen` a `StatefulWidget`. Add `gender`, `height` (a `double`, 175) and `weight` (an `int`, 65) to the State. | state fields (9.3) | it still runs, and looks the same |
+| 2 | Wire the segmented button and the slider: each stores its value with `setState`, and the big height number reads `height`. | segmented button and slider (9.8) | tap Female; drag the slider and the number follows |
+| 3 | Make the weight steppers work, with two methods like `addTicket` and `removeTicket`. Weight never goes below 1. | `setState` and an `if` (9.5) | tap − down to 1; it stops |
+| 4 | Add a `bmi` getter: weight ÷ (height in metres)². For now, make Calculate print it. | worked out, not stored (9.4, 9.5) | 175 cm and 65 kg prints **21.2** |
+| 5 | Add a `showResult` bool. Calculate shows `ResultView`; Re-calculate comes back. | a bool in the State, and `? :` | Calculate shows 21.2; Re-calculate keeps your values |
+| 6 | Give `categoryFor`, `colorFor` and `interpretationFor` their real `if`s. | plain `if`s | 18.5 is Normal; 25 is Overweight |
+
+**The categories:**
+
+| BMI | Category | Colour | Message (your own words are fine) |
+|---|---|---|---|
+| below 18.5 | Underweight | `AppColors.under` | A little under the healthy range. |
+| 18.5 to below 25 | Normal | `AppColors.normal` | Right in the healthy range. |
+| 25 to below 30 | Overweight | `AppColors.over` | A little over the healthy range. |
+| 30 and above | Obese | `AppColors.high` | Above the healthy range. |
+
+## Two hints
+
+- **The slider is in centimetres.** The formula needs metres. If you get
+  0.0021, that is the bug.
+- **Know one right answer before you trust any:** 175 cm and 65 kg is 21.2.
 
 ## Bonus
-Swap the marker's `Align` for `AnimatedAlign` with a ~400 ms duration, so it *glides* to its spot on each Calculate. One-word change, and it's your first taste of implicit animation — the thing Module 10 leans into.
 
+Add a Reset button under Calculate that puts everything back to Male, 175 cm
+and 65 kg, but **asks first**, with the dialog from 9.7 P2.
 
-**Difficulty:** Level 2 — Independent. You get the requirements, not the steps. Stuck? The gated hints are the Level 1 (Guided) path; the bonus/extension is Level 3.
+## When you're done
 
-⏱️ Minimum 90 minutes. Reference: `complete-projects/module-09/bmi-calculator/`.
+Every value on the screen should come from the State, and every control should
+change it. Then watch the solution videos, 9.10 P1 and P2, and compare.
