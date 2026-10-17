@@ -28,8 +28,7 @@ Dismissible(
   key: ValueKey(item),                    // key the ITEM, not the index
   direction: DismissDirection.endToStart,
   background: Container(color: Colors.red),
-  confirmDismiss: (_) => confirmDialog(),
-  onDismissed: (_) => setState(() => items.remove(item)),
+  onDismissed: (_) => deleteItem(item),    // remove, then a SnackBar with UNDO
   child: MyTile(item: item),
 )
 ```

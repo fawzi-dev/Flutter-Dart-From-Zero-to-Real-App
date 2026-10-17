@@ -12,8 +12,7 @@
 //   9.6 P2  the controller and dispose; Apply prints what was typed
 //   9.6 P3  theme, discount guards, errorText and the discounted total
 //   9.6 P4  delivery dropdown; P5 reminder switch; P6 policy checkbox
-//   9.7 P1  Book always answers: two refusals, and a booking with UNDO
-//   9.7 P2  Start over asks first: an AlertDialog that hands back a bool
+//   9.7     Book always answers: two refusals, and a booking with UNDO
 //
 // Every snapshot is in steps/, one per lesson.
 
@@ -142,42 +141,6 @@ class _TicketScreenState extends State<TicketScreen> {
         ),
       ),
     );
-  }
-
-  /// Clearing every choice cannot be undone, so ask first.
-  Future<void> startOver() async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Start over?'),
-        content: Text('This clears every choice on the ticket.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text('Start over'),
-          ),
-        ],
-      ),
-    );
-
-    // Cancel sends false. A tap outside the dialog sends nothing: null.
-    if (confirmed != true) return;
-
-    // The heart stays. It is about the event, not about this booking.
-    setState(() {
-      tierIndex = 1;
-      quantity = 2;
-      codeController.clear();
-      codeError = null;
-      discountPercent = 0;
-      delivery = 'Email';
-      remindMe = true;
-      acceptedPolicy = false;
-    });
   }
 
   /// Two guards: is it a code at all, and is it *the* code.
@@ -335,13 +298,6 @@ class _TicketScreenState extends State<TicketScreen> {
                 SizedBox(height: kGapXL),
 
                 BookButton(onPressed: book),
-                SizedBox(height: kGapS),
-                Center(
-                  child: TextButton(
-                    onPressed: startOver,
-                    child: Text('Start over'),
-                  ),
-                ),
               ],
             ),
           ),

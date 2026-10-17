@@ -3,10 +3,10 @@
 Module 9 is not a screen *growing*, the way Module 8 was. It is one screen
 **gaining behaviour**. So the checkpoints mark what the screen can *do*.
 
-Every file starts from the Module 8 screen exactly as it was built in the videos —
+Every file starts from the Module 8 screen exactly as it was built on camera —
 `EvenDetails`, `DividerContainer`, `Tiers`, `StepButton` — and adds only what
 its lesson teaches. Each file is `lib/main.dart` as it stood at the **end** of
-one lesson, and its header says what that lesson added.
+one video, and its header lists that video's beats in order.
 
 | File | End of | What it is |
 |---|---|---|
@@ -20,8 +20,7 @@ one lesson, and its header says what that lesson added.
 | `step_3d_dropdown.dart` | **9.6 P4** | Delivery from a fixed list. |
 | `step_3e_switch.dart` | **9.6 P5** | Reminder on or off. |
 | `step_3f_checkbox.dart` | **9.6 P6** | Book stays grey until the policy is accepted (`VoidCallback?`). |
-| `step_4_booked.dart` | **9.7 P1** | SnackBars explain both refusals and offer UNDO. |
-| `step_4b_dialog.dart` | **9.7 P2** | Start over asks first; final code matches `lib/main.dart`. |
+| `step_4_booked.dart` | **9.7** | SnackBars explain both refusals and offer UNDO. |
 
 The ticket card runs in one go, 9.5 to 9.7. The concept lessons before it —
 9.1 to 9.3, and 9.8's slider and segmented button after it — are built in
@@ -30,9 +29,9 @@ The ticket card runs in one go, 9.5 to 9.7. The concept lessons before it —
 ## Why step 1 ends broken
 
 9.5 P1 makes the screen listen, then hands `quantity` to plus and minus the
-way the counter did in 9.2: as a local inside `build`. You will recognise the
-bug in seconds, because you have already met it — and 9.5 P2 fixes it with the
-word you learned on the counter. **Run the broken version** before 9.5 P2.
+way the counter did in 9.2: as a local inside `build`. Students recognise the
+bug in seconds, because they have already met it — and 9.5 P2 fixes it with the
+word they learned on the counter. **Run the broken version** before 9.5 P2.
 
 ## The diffs worth doing
 
@@ -60,9 +59,6 @@ always-enabled (and `VoidCallback?` loses its `?`), and `book()` learns to
 *say* why it refused, for the policy and for the seats, plus a SnackBar with
 **UNDO**. `hideCurrentSnackBar()` keeps it to one answer at a time.
 
-**`step_4_booked.dart` → `step_4b_dialog.dart`**: a Start over button and an
-`AlertDialog` that hands back a `bool`. Booking has UNDO, so it never asks.
-Clearing every choice has no UNDO, so it asks first.
 
 ## Dicee
 

@@ -1,4 +1,4 @@
-// End of lesson 9.7 P1 -- "Book Always Answers".
+// End of lesson 9.7 -- "Book Always Answers".
 //
 // Book is always tappable, and it always answers. book() says why it
 // refuses -- the policy, or not enough seats -- and a booking can be undone.

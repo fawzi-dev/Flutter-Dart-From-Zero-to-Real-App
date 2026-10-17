@@ -1,6 +1,6 @@
-# Ticket Booking v2 — the Module 9 lesson project
+# Ticket Booking v2 — the Module 9 instructor project
 
-The Module 8 screen, **woken up** — the Module 8 code with the same names (`EvenDetails`, `DividerContainer`, `Tiers`, `StepButton`), so it matches the videos. It keeps the poster, palette, description,
+The Module 8 screen, **woken up** — Fawzi's own Module 8 code, with his names (`EvenDetails`, `DividerContainer`, `Tiers`, `StepButton`), so it matches the videos. It keeps the poster, palette, description,
 tier cards and spacing while the existing controls gain behavior. New booking
 inputs appear below the quantity row, one per lesson.
 
@@ -23,8 +23,7 @@ flutter run
 | 9.6 P4 · Dropdown | Delivery comes from three valid choices. |
 | 9.6 P5 · Switch | The customer can turn the reminder on or off. |
 | 9.6 P6 · Checkbox | Book stays grey until the policy is accepted. |
-| 9.7 P1 · SnackBar | Book explains both refusals and offers UNDO. |
-| 9.7 P2 · Dialog | Start over asks before clearing the ticket. |
+| 9.7 · SnackBar | Book explains both refusals and offers UNDO. |
 
 The ticket card runs **in one go**, 9.5 to 9.7 — eleven videos in the same
 project. Every concept it needs is taught first on the state playground (9.1 to
@@ -32,7 +31,7 @@ project. Every concept it needs is taught first on the state playground (9.1 to
 
 ## Nothing here is faked
 
-That is the point. Pick a tier, change the
+That is the point, and it is worth saying on camera. Pick a tier, change the
 quantity, enter the code — **the total is genuinely recomputed from those
 three, every rebuild**:
 
@@ -49,21 +48,21 @@ those is a test in `test/`.
 
 ## "My tickets, your dice"
 
-Dicee (9.4) sits just before the ticket card on purpose. It is **your own
-Module 8 challenge** brought to life — the emotional payoff of `setState`,
-on your app — so it gets its own video and its own project
+Dicee (9.4) sits just before the ticket card on purpose. It is **the student's
+own Module 8 challenge** brought to life — the emotional payoff of `setState`,
+on their app — so it gets its own video and its own project
 (`complete-projects/module-09/dicee-v2-interactive/`), and it is where
 `VoidCallback` is first explained, on a tappable die.
 
 The module challenge is the **BMI calculator**, a third shape again.
 
-## The thing to notice
+## The thing to point at on camera
 
 **The visual identity stays familiar.** The poster, description, palette and
 ticket tiers remain. Module 9 changes the controls and adds booking inputs,
 then gives the screen memory.
 
-## Three details worth noticing
+## Three teaching details worth keeping
 
 **`SoldBar` and `TierChip` are still Stateless** — they own nothing, they are
 handed values and a callback. Only the widget that holds the truth gets

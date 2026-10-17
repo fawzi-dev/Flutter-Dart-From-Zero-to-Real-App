@@ -55,7 +55,7 @@ Do them in order. Each one has a check, so you know when it's right.
 ## Bonus
 
 Add a Reset button under Calculate that puts everything back to Male, 175 cm
-and 65 kg, but **asks first**, with the dialog from 9.7 P2.
+and 65 kg. One method, one `setState`.
 
 ## When you're done
 

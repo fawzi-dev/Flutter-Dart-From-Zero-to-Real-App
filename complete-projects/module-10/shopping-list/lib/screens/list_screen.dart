@@ -29,24 +29,20 @@ class _ListScreenState extends State<ListScreen> {
     setState(() => items.add(newItem));
   }
 
-  Future<bool> confirmDelete(GroceryItem item) async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Remove ${item.name}?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Remove'),
-          ),
-        ],
+  // Delete straight away, but keep a way back: the undo from 10.4.
+  void deleteItem(GroceryItem item) {
+    final removedIndex = items.indexOf(item);
+    setState(() => items.remove(item));
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${item.name} removed'),
+        action: SnackBarAction(
+          label: 'UNDO',
+          onPressed: () => setState(() => items.insert(removedIndex, item)),
+        ),
       ),
     );
-    return result ?? false;
   }
 
   @override
@@ -98,8 +94,7 @@ class _ListScreenState extends State<ListScreen> {
                           ),
                           child: const Icon(Icons.delete, color: Colors.white),
                         ),
-                        confirmDismiss: (_) => confirmDelete(item),
-                        onDismissed: (_) => setState(() => items.remove(item)),
+                        onDismissed: (_) => deleteItem(item),
                         child: GroceryTile(
                           item: item,
                           onToggle: () =>

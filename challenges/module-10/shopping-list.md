@@ -13,13 +13,13 @@ The canonical real app: list → add → check off → delete. Half the apps on 
 1. A `GroceryItem` model class (`name`, `quantity`, `bought`) in `lib/models/`.
 2. File structure (lesson 10.7): `models/`, `screens/`, `widgets/`, with the tile as its own widget. **And a shared `lib/app_colors.dart`** imported across the app — your BMI app's `AppColors`, moved into its own file. This is the concrete cash-out of Module 9's promise: *a file earns its place the moment something is shared.* One color source: no hex codes outside that file.
 3. Add screen returns the item via `Navigator.pop(context, item)`; the list screen `await`s it and `setState`s. **Both exits handled** — save returns an item, back returns null. **All state lives in the list screen.** The add screen owns nothing.
-4. Delete = `Dismissible` + `AlertDialog` confirm ("Remove Milk?" Cancel/Remove), keyed by the **item**, not the index.
+4. Delete = `Dismissible` + a SnackBar with **UNDO** ("Milk removed · UNDO"), like the contacts in 10.4, keyed by the **item**, not the index.
 5. A **live "bought" indicator derived from the list**, computed inside `build` so it can never go stale. The reference renders it as a progress bar + "X of Y" label; a plain count also passes — the graded part is *derived, not hand-maintained.*
 6. Empty state: when `items.isEmpty`, show an icon + message instead of the list.
 
 ## Rubric
 - [ ] `ListView.builder` — not a `Column` of children
-- [ ] Add → progress updates → check off → strike-through + item sinks → swipe → dialog → delete → empty state appears when the last item goes
+- [ ] Add → progress updates → check off → strike-through + item sinks → swipe → UNDO → delete → empty state appears when the last item goes
 - [ ] The tile receives its item + callbacks via constructor — it does **not** own state
 - [ ] Every app color comes from `app_colors.dart` by name — no hex codes in screens or widgets (a red delete panel or white text on the accent is fine)
 - [ ] No unbounded-height errors (if you hit one: lesson 8.5, then 10.1 P2 — wrap the list in `Expanded`)

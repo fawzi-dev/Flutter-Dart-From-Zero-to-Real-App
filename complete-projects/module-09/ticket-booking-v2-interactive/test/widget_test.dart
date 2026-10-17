@@ -112,7 +112,7 @@ void main() {
     expect(tester.widget<CheckboxListTile>(policy).value, isTrue);
   });
 
-  testWidgets('9.7 P1 — booking is refused until the policy is accepted',
+  testWidgets('9.7 — booking is refused until the policy is accepted',
       (tester) async {
     await pump(tester);
 
@@ -123,7 +123,7 @@ void main() {
     expect(find.text('142 sold'), findsOneWidget);
   });
 
-  testWidgets('9.5 P4 and 9.7 P1 — Book never sells a seat that does not exist',
+  testWidgets('9.5 P4 and 9.7 — Book never sells a seat that does not exist',
       (tester) async {
     await pump(tester);
 
@@ -148,7 +148,7 @@ void main() {
     expect(find.text('Only 2 seats left.'), findsOneWidget);
   });
 
-  testWidgets('9.7 P1 — booking moves the sold bar, and UNDO puts it back',
+  testWidgets('9.7 — booking moves the sold bar, and UNDO puts it back',
       (tester) async {
     await pump(tester);
 
@@ -166,7 +166,7 @@ void main() {
     expect(find.text('142 sold'), findsOneWidget);
   });
 
-  testWidgets('9.7 P1 — UNDO takes back what was booked, not the new quantity',
+  testWidgets('9.7 — UNDO takes back what was booked, not the new quantity',
       (tester) async {
     await pump(tester);
 
@@ -185,58 +185,4 @@ void main() {
     expect(find.text('142 sold'), findsOneWidget);
   });
 
-  testWidgets('9.7 P2 — Cancel and a tap outside both leave the ticket alone',
-      (tester) async {
-    await pump(tester);
-
-    await tester.tap(find.text('BACKSTAGE'));
-    await tester.pump();
-    expect(find.text('190,000 IQD'), findsOneWidget);
-
-    await tester.tap(find.text('Start over'));
-    await tester.pumpAndSettle();
-    expect(find.text('Start over?'), findsOneWidget);
-    await tester.tap(find.text('Cancel'));
-    await tester.pumpAndSettle();
-    expect(find.text('Start over?'), findsNothing);
-    expect(find.text('190,000 IQD'), findsOneWidget);
-
-    // A tap on the dark barrier closes the dialog and sends back null.
-    await tester.tap(find.text('Start over'));
-    await tester.pumpAndSettle();
-    await tester.tapAt(const Offset(10, 10));
-    await tester.pumpAndSettle();
-    expect(find.text('Start over?'), findsNothing);
-    expect(find.text('190,000 IQD'), findsOneWidget);
-  });
-
-  testWidgets('9.7 P2 — only a confirmed Start over clears every choice',
-      (tester) async {
-    await pump(tester);
-
-    await tester.tap(find.text('BACKSTAGE'));
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.enterText(find.byType(TextField), 'citadel20');
-    await tester.tap(find.text('Apply'));
-    await tester.tap(find.text('I accept the refund policy'));
-    await tester.pump();
-    expect(find.text('228,000 IQD'), findsOneWidget);
-
-    await tester.tap(find.text('Start over'));
-    await tester.pumpAndSettle();
-    // The dialog's own button, not the one on the card behind it.
-    await tester.tap(find.descendant(
-      of: find.byType(AlertDialog),
-      matching: find.text('Start over'),
-    ));
-    await tester.pumpAndSettle();
-
-    expect(find.text('120,000 IQD'), findsOneWidget);
-    expect(find.text('2'), findsOneWidget);
-    expect(tester.widget<TextField>(find.byType(TextField)).controller!.text,
-        isEmpty);
-    expect(
-        tester.widget<CheckboxListTile>(find.byType(CheckboxListTile)).value,
-        isFalse);
-  });
 }

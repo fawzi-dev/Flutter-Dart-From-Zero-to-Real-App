@@ -52,21 +52,11 @@ SegmentedButton(segments: [...], selected: {choice},
 
 ## Feedback
 ```dart
-// Informing: a SnackBar. It leaves by itself. action: is optional.
+// A SnackBar tells the user something. action: is optional.
 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
   content: Text('Deleted $name'),
   action: SnackBarAction(label: 'UNDO', onPressed: () => setState(() => ...)),
 ));
-
-// Deciding: a dialog. The method must be async to await the answer.
-Future<void> reset() async {
-  final confirmed = await showDialog<bool>(context: context, builder: (context) => AlertDialog(
-    title: const Text('Reset?'),
-    actions: [ TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
-               TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Reset')) ]));
-  if (confirmed != true) return;   // Cancel sends false, a tap outside sends null
-  setState(() => ...);
-}
 ```
 Copy a value into a `final` before the SnackBar if UNDO needs it later: by the
 time UNDO is tapped, the field may have changed.
