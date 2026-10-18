@@ -1,6 +1,5 @@
-// BMI solution, step 2 of 5 -- end of Task 3 (lesson 9.10 P1).
-//
-// The weight steppers work. Plus always adds; minus never goes below 1.
+// 9.10 P5 -- Weight and the BMI.
+// weight in the State; the steppers; the bmi getter, printed
 
 import 'package:flutter/material.dart';
 
@@ -15,12 +14,6 @@ class AppColors {
   static const primary = Color(0xFF4F6DF5);
   static const ink = Color(0xFF1A1D2E);
   static const muted = Color(0xFF9AA0B4);
-
-  // The health scale, low BMI to high.
-  static const under = Color(0xFF29B6F6);
-  static const normal = Color(0xFF24D876);
-  static const over = Color(0xFFFF9F43);
-  static const high = Color(0xFFFF5A5F);
 }
 
 enum Gender { male, female }
@@ -45,12 +38,17 @@ class BmiScreen extends StatefulWidget {
 }
 
 class _BmiScreenState extends State<BmiScreen> {
-  // Everything a person can change. (Task 1)
+  // Everything a person can change.
   Gender gender = Gender.male;
   double height = 175; // cm
   int weight = 65; // kg
 
-  // Task 3: one plain if each, like addTicket and removeTicket.
+  // Worked out, never stored.
+  double get bmi {
+    final metres = height / 100; // the slider is in centimetres
+    return weight / (metres * metres);
+  }
+
   void addWeight() {
     setState(() {
       weight++;
@@ -83,14 +81,8 @@ class _BmiScreenState extends State<BmiScreen> {
               children: [
                 SegmentedButton<Gender>(
                   segments: const [
-                    ButtonSegment(
-                      value: Gender.male,
-                      label: Text('Male'),
-                    ),
-                    ButtonSegment(
-                      value: Gender.female,
-                      label: Text('Female'),
-                    ),
+                    ButtonSegment(value: Gender.male, label: Text('Male')),
+                    ButtonSegment(value: Gender.female, label: Text('Female')),
                   ],
                   selected: {gender},
                   onSelectionChanged: (selection) {
@@ -127,80 +119,22 @@ class _BmiScreenState extends State<BmiScreen> {
                         onPressed: removeWeight,
                       ),
                       BigNumber(value: '$weight', unit: 'kg'),
-                      StepperButton(
-                        icon: Icons.add,
-                        onPressed: addWeight,
-                      ),
+                      StepperButton(icon: Icons.add, onPressed: addWeight),
                     ],
                   ),
                 ),
                 const SizedBox(height: 24),
                 PrimaryButton(
                   label: 'Calculate BMI',
-                  onPressed: () {},
+                  onPressed: () {
+                    // Check: 175 cm and 65 kg prints 21.2.
+                    debugPrint(bmi.toStringAsFixed(1));
+                  },
                 ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-// Task 6: still placeholders -- every BMI is 'Normal' for now.
-String categoryFor(double bmi) {
-  return 'Normal';
-}
-
-Color colorFor(double bmi) {
-  return AppColors.normal;
-}
-
-String interpretationFor(double bmi) {
-  return 'Your message goes here.';
-}
-
-// ===================================================================
-//  THE PRE-BUILT UI -- in the starter already, ready to be wired.
-//  Each piece is told what to show and what to do by the screen.
-// ===================================================================
-
-/// The whole result view. It is handed the BMI and what to do on
-/// Re-calculate -- values down, taps up, like the ticket's widgets (9.5).
-class ResultView extends StatelessWidget {
-  const ResultView({super.key, required this.bmi, required this.onRecalculate});
-
-  final double bmi;
-  final VoidCallback onRecalculate;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          const Spacer(),
-          Text(
-            bmi.toStringAsFixed(1),
-            style: const TextStyle(
-              color: AppColors.ink,
-              fontSize: 88,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-          CategoryPill(category: categoryFor(bmi), color: colorFor(bmi)),
-          const SizedBox(height: 40),
-          BmiScale(category: categoryFor(bmi)),
-          const SizedBox(height: 32),
-          Text(
-            interpretationFor(bmi),
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.muted, fontSize: 16),
-          ),
-          const Spacer(),
-          PrimaryButton(label: 'Re-calculate', onPressed: onRecalculate),
-        ],
       ),
     );
   }
@@ -281,7 +215,7 @@ class BigNumber extends StatelessWidget {
   }
 }
 
-/// A round +/- button: a circle with an IconButton inside (9.1).
+/// A round +/- button: a circle with an IconButton inside.
 class StepperButton extends StatelessWidget {
   const StepperButton({super.key, required this.icon, required this.onPressed});
 
@@ -305,7 +239,7 @@ class StepperButton extends StatelessWidget {
   }
 }
 
-/// The big full-width button: an ElevatedButton styled like Book (9.5 P4).
+/// The big full-width button: an ElevatedButton styled like Book.
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
@@ -333,107 +267,6 @@ class PrimaryButton extends StatelessWidget {
         ),
         child: Text(label),
       ),
-    );
-  }
-}
-
-/// The category in a soft coloured pill: Normal, Overweight...
-class CategoryPill extends StatelessWidget {
-  const CategoryPill({super.key, required this.category, required this.color});
-
-  final String category;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        category,
-        style: TextStyle(
-          color: color,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-}
-
-/// The health scale: four coloured bands in a Row (Expanded, 8.3). The band
-/// you are in is tall and labelled. It is told the category, nothing else.
-class BmiScale extends StatelessWidget {
-  const BmiScale({super.key, required this.category});
-
-  final String category;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      spacing: 6,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Expanded(
-          child: ScaleBand(
-            color: AppColors.under,
-            isYou: category == 'Underweight',
-          ),
-        ),
-        Expanded(
-          child: ScaleBand(
-            color: AppColors.normal,
-            isYou: category == 'Normal',
-          ),
-        ),
-        Expanded(
-          child: ScaleBand(
-            color: AppColors.over,
-            isYou: category == 'Overweight',
-          ),
-        ),
-        Expanded(
-          child: ScaleBand(
-            color: AppColors.high,
-            isYou: category == 'Obese',
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// One band of the scale: short and pale, or tall and labelled "You".
-class ScaleBand extends StatelessWidget {
-  const ScaleBand({super.key, required this.color, required this.isYou});
-
-  final Color color;
-  final bool isYou;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          isYou ? 'You' : '',
-          style: TextStyle(
-            color: color,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          height: isYou ? 22 : 10,
-          decoration: BoxDecoration(
-            color: isYou ? color : color.withValues(alpha: 0.35),
-            borderRadius: BorderRadius.circular(6),
-          ),
-        ),
-      ],
     );
   }
 }

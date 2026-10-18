@@ -1,11 +1,8 @@
-# BMI Calculator — Starter (Module 9 exercise)
+# BMI Calculator — Starter (Module 9 challenge)
 
-The whole UI is already here: the colours, the cards, the buttons, the scale
-and the result view. Every value is typed in, and nothing moves. Your job is
-the Module 9 part: give the screen a memory, in six tasks.
+An empty app. You build the BMI calculator from scratch.
 
-The tasks are listed at the top of `lib/main.dart`. The full brief, with a
-check for each task, is `challenges/module-09/bmi-calculator.md`.
+The brief is `challenges/module-09/bmi-calculator.md`.
 
 ## Run it
 
@@ -13,6 +10,3 @@ check for each task, is `challenges/module-09/bmi-calculator.md`.
 flutter pub get
 flutter run
 ```
-
-Tap Female, drag the slider, press Calculate: nothing happens yet. By the end
-of task 6, everything will.

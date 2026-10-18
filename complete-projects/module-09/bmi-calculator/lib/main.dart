@@ -1,18 +1,7 @@
 // BMI Calculator -- Module 9 exercise, finished.
 //
-// The starter (starter-projects/module-09/bmi-calculator) already has all of
-// the UI: the colours, the cards, the buttons, the scale and both views, with
-// fixed values. The exercise is the Module 9 part only -- state:
-//
-//   Task 1  BmiScreen becomes Stateful; gender, height and weight are fields.
-//   Task 2  The segmented button and the slider are wired with setState.
-//   Task 3  The weight steppers work, and never go below 1.
-//   Task 4  bmi is a getter, worked out in metres. Check: 175 cm, 65 kg = 21.2.
-//   Task 5  One bool, showResult, swaps the input view and the result view.
-//   Task 6  categoryFor, colorFor and interpretationFor get their real ifs.
-//
-// Every snapshot is in steps/, one per stage of the solution videos.
-// Nothing here is new: every widget in this file was taught in Modules 7-9.
+// Built from an empty starter in eight videos, 9.10 P1 to P8. Every stage is
+// in steps/. Nothing here is new: every widget was taught in Modules 7-9.
 
 import 'package:flutter/material.dart';
 
@@ -57,21 +46,20 @@ class BmiScreen extends StatefulWidget {
 }
 
 class _BmiScreenState extends State<BmiScreen> {
-  // Everything a person can change. (Task 1)
+  // Everything a person can change.
   Gender gender = Gender.male;
   double height = 175; // cm
   int weight = 65; // kg
 
-  // Which view is showing. (Task 5)
+  // Which view is showing.
   bool showResult = false;
 
-  // Worked out, never stored, like the ticket's total. (Task 4)
+  // Worked out, never stored.
   double get bmi {
     final metres = height / 100; // the slider is in centimetres
     return weight / (metres * metres);
   }
 
-  // Task 3: one plain if each, like addTicket and removeTicket.
   void addWeight() {
     setState(() {
       weight++;
@@ -96,7 +84,6 @@ class _BmiScreenState extends State<BmiScreen> {
         foregroundColor: AppColors.ink,
         centerTitle: true,
       ),
-      // One bool picks the whole body. (Task 5)
       body: SafeArea(
         child: showResult
             ? ResultView(
@@ -105,7 +92,6 @@ class _BmiScreenState extends State<BmiScreen> {
                   setState(() => showResult = false);
                 },
               )
-            // -------------------------------------------------- INPUT
             : SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -180,7 +166,7 @@ class _BmiScreenState extends State<BmiScreen> {
   }
 }
 
-// Task 6. Boundaries: exactly 18.5 is Normal, exactly 25 is Overweight.
+// Boundaries: exactly 18.5 is Normal, exactly 25 is Overweight.
 String categoryFor(double bmi) {
   if (bmi < 18.5) return 'Underweight';
   if (bmi < 25) return 'Normal';
@@ -200,51 +186,6 @@ String interpretationFor(double bmi) {
   if (bmi < 25) return 'Right in the healthy range. Nice work!';
   if (bmi < 30) return 'A little over the healthy range. Move a bit more.';
   return 'Above the healthy range. Small, steady changes add up.';
-}
-
-// ===================================================================
-//  THE PRE-BUILT UI -- in the starter already, ready to be wired.
-//  Each piece is told what to show and what to do by the screen.
-// ===================================================================
-
-/// The whole result view. It is handed the BMI and what to do on
-/// Re-calculate -- values down, taps up, like the ticket's widgets (9.5).
-class ResultView extends StatelessWidget {
-  const ResultView({super.key, required this.bmi, required this.onRecalculate});
-
-  final double bmi;
-  final VoidCallback onRecalculate;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          const Spacer(),
-          Text(
-            bmi.toStringAsFixed(1),
-            style: const TextStyle(
-              color: AppColors.ink,
-              fontSize: 88,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-          CategoryPill(category: categoryFor(bmi), color: colorFor(bmi)),
-          const SizedBox(height: 40),
-          BmiScale(category: categoryFor(bmi)),
-          const SizedBox(height: 32),
-          Text(
-            interpretationFor(bmi),
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.muted, fontSize: 16),
-          ),
-          const Spacer(),
-          PrimaryButton(label: 'Re-calculate', onPressed: onRecalculate),
-        ],
-      ),
-    );
-  }
 }
 
 /// A white rounded card with a label above its content.
@@ -322,7 +263,7 @@ class BigNumber extends StatelessWidget {
   }
 }
 
-/// A round +/- button: a circle with an IconButton inside (9.1).
+/// A round +/- button: a circle with an IconButton inside.
 class StepperButton extends StatelessWidget {
   const StepperButton({super.key, required this.icon, required this.onPressed});
 
@@ -346,7 +287,7 @@ class StepperButton extends StatelessWidget {
   }
 }
 
-/// The big full-width button: an ElevatedButton styled like Book (9.5 P4).
+/// The big full-width button: an ElevatedButton styled like Book.
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
@@ -373,6 +314,45 @@ class PrimaryButton extends StatelessWidget {
           textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         child: Text(label),
+      ),
+    );
+  }
+}
+
+/// The result view: handed the BMI, and what to do on Re-calculate.
+class ResultView extends StatelessWidget {
+  const ResultView({super.key, required this.bmi, required this.onRecalculate});
+
+  final double bmi;
+  final VoidCallback onRecalculate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          const Spacer(),
+          Text(
+            bmi.toStringAsFixed(1),
+            style: const TextStyle(
+              color: AppColors.ink,
+              fontSize: 88,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          CategoryPill(category: categoryFor(bmi), color: colorFor(bmi)),
+          const SizedBox(height: 40),
+          BmiScale(category: categoryFor(bmi)),
+          const SizedBox(height: 32),
+          Text(
+            interpretationFor(bmi),
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: AppColors.muted, fontSize: 16),
+          ),
+          const Spacer(),
+          PrimaryButton(label: 'Re-calculate', onPressed: onRecalculate),
+        ],
       ),
     );
   }
@@ -405,8 +385,7 @@ class CategoryPill extends StatelessWidget {
   }
 }
 
-/// The health scale: four coloured bands in a Row (Expanded, 8.3). The band
-/// you are in is tall and labelled. It is told the category, nothing else.
+/// Four coloured bands in a Row. The band you are in is tall and labelled.
 class BmiScale extends StatelessWidget {
   const BmiScale({super.key, required this.category});
 

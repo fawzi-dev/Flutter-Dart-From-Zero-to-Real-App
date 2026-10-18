@@ -1,7 +1,5 @@
-// BMI solution, step 3 of 5 -- end of Task 4 (lesson 9.10 P1).
-//
-// bmi is a getter, worked out from height and weight on every read. Calculate
-// prints it, so it can be checked before any result view exists.
+// 9.10 P8 -- The scale.
+// BmiScale and ScaleBand. Finished: identical to lib/main.dart
 
 import 'package:flutter/material.dart';
 
@@ -46,18 +44,20 @@ class BmiScreen extends StatefulWidget {
 }
 
 class _BmiScreenState extends State<BmiScreen> {
-  // Everything a person can change. (Task 1)
+  // Everything a person can change.
   Gender gender = Gender.male;
   double height = 175; // cm
   int weight = 65; // kg
 
-  // Worked out, never stored, like the ticket's total. (Task 4)
+  // Which view is showing.
+  bool showResult = false;
+
+  // Worked out, never stored.
   double get bmi {
     final metres = height / 100; // the slider is in centimetres
     return weight / (metres * metres);
   }
 
-  // Task 3: one plain if each, like addTicket and removeTicket.
   void addWeight() {
     setState(() {
       weight++;
@@ -83,137 +83,107 @@ class _BmiScreenState extends State<BmiScreen> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                SegmentedButton<Gender>(
-                  segments: const [
-                    ButtonSegment(
-                      value: Gender.male,
-                      label: Text('Male'),
-                    ),
-                    ButtonSegment(
-                      value: Gender.female,
-                      label: Text('Female'),
-                    ),
-                  ],
-                  selected: {gender},
-                  onSelectionChanged: (selection) {
-                    setState(() => gender = selection.first);
-                  },
-                ),
-                const SizedBox(height: 16),
-                InputCard(
-                  label: 'Height',
+        child: showResult
+            ? ResultView(
+                bmi: bmi,
+                onRecalculate: () {
+                  setState(() => showResult = false);
+                },
+              )
+            : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
-                      BigNumber(value: '${height.round()}', unit: 'cm'),
-                      Slider(
-                        value: height,
-                        min: 120,
-                        max: 220,
-                        divisions: 100,
-                        activeColor: AppColors.primary,
-                        onChanged: (value) {
-                          setState(() => height = value);
+                      SegmentedButton<Gender>(
+                        segments: const [
+                          ButtonSegment(
+                            value: Gender.male,
+                            label: Text('Male'),
+                          ),
+                          ButtonSegment(
+                            value: Gender.female,
+                            label: Text('Female'),
+                          ),
+                        ],
+                        selected: {gender},
+                        onSelectionChanged: (selection) {
+                          setState(() => gender = selection.first);
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      InputCard(
+                        label: 'Height',
+                        child: Column(
+                          children: [
+                            BigNumber(value: '${height.round()}', unit: 'cm'),
+                            Slider(
+                              value: height,
+                              min: 120,
+                              max: 220,
+                              divisions: 100,
+                              activeColor: AppColors.primary,
+                              onChanged: (value) {
+                                setState(() => height = value);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      InputCard(
+                        label: 'Weight',
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            StepperButton(
+                              icon: Icons.remove,
+                              onPressed: removeWeight,
+                            ),
+                            BigNumber(value: '$weight', unit: 'kg'),
+                            StepperButton(
+                              icon: Icons.add,
+                              onPressed: addWeight,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      PrimaryButton(
+                        label: 'Calculate BMI',
+                        onPressed: () {
+                          setState(() => showResult = true);
                         },
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
-                InputCard(
-                  label: 'Weight',
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      StepperButton(
-                        icon: Icons.remove,
-                        onPressed: removeWeight,
-                      ),
-                      BigNumber(value: '$weight', unit: 'kg'),
-                      StepperButton(
-                        icon: Icons.add,
-                        onPressed: addWeight,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-                PrimaryButton(
-                  label: 'Calculate BMI',
-                  onPressed: () {
-                    // Check: 175 cm and 65 kg should print 21.2.
-                    debugPrint(bmi.toStringAsFixed(1));
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }
 }
 
-// Task 6: still placeholders -- every BMI is 'Normal' for now.
+// Boundaries: exactly 18.5 is Normal, exactly 25 is Overweight.
 String categoryFor(double bmi) {
-  return 'Normal';
+  if (bmi < 18.5) return 'Underweight';
+  if (bmi < 25) return 'Normal';
+  if (bmi < 30) return 'Overweight';
+  return 'Obese';
 }
 
 Color colorFor(double bmi) {
-  return AppColors.normal;
+  if (bmi < 18.5) return AppColors.under;
+  if (bmi < 25) return AppColors.normal;
+  if (bmi < 30) return AppColors.over;
+  return AppColors.high;
 }
 
 String interpretationFor(double bmi) {
-  return 'Your message goes here.';
-}
-
-// ===================================================================
-//  THE PRE-BUILT UI -- in the starter already, ready to be wired.
-//  Each piece is told what to show and what to do by the screen.
-// ===================================================================
-
-/// The whole result view. It is handed the BMI and what to do on
-/// Re-calculate -- values down, taps up, like the ticket's widgets (9.5).
-class ResultView extends StatelessWidget {
-  const ResultView({super.key, required this.bmi, required this.onRecalculate});
-
-  final double bmi;
-  final VoidCallback onRecalculate;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          const Spacer(),
-          Text(
-            bmi.toStringAsFixed(1),
-            style: const TextStyle(
-              color: AppColors.ink,
-              fontSize: 88,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-          CategoryPill(category: categoryFor(bmi), color: colorFor(bmi)),
-          const SizedBox(height: 40),
-          BmiScale(category: categoryFor(bmi)),
-          const SizedBox(height: 32),
-          Text(
-            interpretationFor(bmi),
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.muted, fontSize: 16),
-          ),
-          const Spacer(),
-          PrimaryButton(label: 'Re-calculate', onPressed: onRecalculate),
-        ],
-      ),
-    );
-  }
+  if (bmi < 18.5) return 'A little under the healthy range. Eat a bit more.';
+  if (bmi < 25) return 'Right in the healthy range. Nice work!';
+  if (bmi < 30) return 'A little over the healthy range. Move a bit more.';
+  return 'Above the healthy range. Small, steady changes add up.';
 }
 
 /// A white rounded card with a label above its content.
@@ -291,7 +261,7 @@ class BigNumber extends StatelessWidget {
   }
 }
 
-/// A round +/- button: a circle with an IconButton inside (9.1).
+/// A round +/- button: a circle with an IconButton inside.
 class StepperButton extends StatelessWidget {
   const StepperButton({super.key, required this.icon, required this.onPressed});
 
@@ -315,7 +285,7 @@ class StepperButton extends StatelessWidget {
   }
 }
 
-/// The big full-width button: an ElevatedButton styled like Book (9.5 P4).
+/// The big full-width button: an ElevatedButton styled like Book.
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
@@ -342,6 +312,45 @@ class PrimaryButton extends StatelessWidget {
           textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         child: Text(label),
+      ),
+    );
+  }
+}
+
+/// The result view: handed the BMI, and what to do on Re-calculate.
+class ResultView extends StatelessWidget {
+  const ResultView({super.key, required this.bmi, required this.onRecalculate});
+
+  final double bmi;
+  final VoidCallback onRecalculate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          const Spacer(),
+          Text(
+            bmi.toStringAsFixed(1),
+            style: const TextStyle(
+              color: AppColors.ink,
+              fontSize: 88,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          CategoryPill(category: categoryFor(bmi), color: colorFor(bmi)),
+          const SizedBox(height: 40),
+          BmiScale(category: categoryFor(bmi)),
+          const SizedBox(height: 32),
+          Text(
+            interpretationFor(bmi),
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: AppColors.muted, fontSize: 16),
+          ),
+          const Spacer(),
+          PrimaryButton(label: 'Re-calculate', onPressed: onRecalculate),
+        ],
       ),
     );
   }
@@ -374,8 +383,7 @@ class CategoryPill extends StatelessWidget {
   }
 }
 
-/// The health scale: four coloured bands in a Row (Expanded, 8.3). The band
-/// you are in is tall and labelled. It is told the category, nothing else.
+/// Four coloured bands in a Row. The band you are in is tall and labelled.
 class BmiScale extends StatelessWidget {
   const BmiScale({super.key, required this.category});
 

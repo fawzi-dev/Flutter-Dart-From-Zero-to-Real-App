@@ -1,63 +1,66 @@
-# Exercise — BMI Calculator
+# Challenge — BMI Calculator
 
-Module 9 is about state, so this exercise is about state. **The whole UI is
-already built for you**: the colours, the cards, the buttons, the scale and
-both views. Every value on it is typed in, and nothing moves. Your job is to
-give the screen a memory.
+Build a BMI calculator from an empty app. One screen, two views, and every
+value on it comes from state.
 
-**Starter:** `starter-projects/module-09/bmi-calculator/`. Run it first: tap
-Female, drag the slider, press Calculate. Nothing happens. By the end,
-everything will.
+**Starter:** `starter-projects/module-09/bmi-calculator/`, an empty
+`MaterialApp` with an empty `Scaffold`.
 
-## What's already there
+## The app
 
-| Piece | What it does | You give it |
+**Input view**
+- A gender toggle: a `SegmentedButton` with Male and Female.
+- A **Height** card: the height, big, in cm, and a `Slider` from 120 to 220.
+- A **Weight** card: the weight, big, in kg, with round **−** and **+** buttons.
+- A big **Calculate BMI** button.
+
+**Result view** (after Calculate)
+- The BMI, huge, to one decimal place.
+- The category in a coloured pill: Underweight, Normal, Overweight or Obese.
+- A scale of four coloured bands. The band you are in is taller, and says "You".
+- A one-line message about the result.
+- A **Re-calculate** button that goes back to the input view.
+
+## Requirements
+
+1. **Your own small widgets, used more than once.** At least an `InputCard`
+   (used for Height and for Weight), a `StepperButton` (used for − and +), and a
+   `PrimaryButton` (used for Calculate and Re-calculate). Each takes what it
+   shows and what it does as constructor parameters.
+2. **One `AppColors` class** names every colour once. Nothing else uses a raw
+   `Color(0x…)`.
+3. **The state:** `gender`, `height` (a `double`) and `weight` (an `int`) are
+   fields of the State. Every change goes through `setState`.
+4. **The BMI is a getter**, worked out from height and weight. Never stored.
+5. **Two views, one bool.** A `bool showResult` picks which view the body
+   shows.
+6. **The logic is plain functions:** `categoryFor`, `colorFor` and
+   `interpretationFor` take the BMI and return a `String` or a `Color`.
+
+## The categories
+
+| BMI | Category | Message (your own words are fine) |
 |---|---|---|
-| `AppColors` | every colour, named once | nothing |
-| `enum Gender` | `male`, `female` | nothing |
-| `InputCard` | the white rounded card with a label | a label and a child |
-| `BigNumber` | a big number with its unit: 175 cm | the text to show |
-| `StepperButton` | the round − / + button | an icon and an `onPressed` |
-| `PrimaryButton` | the big full-width button | a label and an `onPressed` |
-| `ResultView` | the whole result screen | the `bmi`, and an `onRecalculate` |
-| `CategoryPill`, `BmiScale` | the coloured pill and the four-band scale | the category |
+| below 18.5 | Underweight | A little under the healthy range. |
+| 18.5 to below 25 | Normal | Right in the healthy range. |
+| 25 to below 30 | Overweight | A little over the healthy range. |
+| 30 and above | Obese | Above the healthy range. |
 
-You do not need to change any of these. You only connect them to state.
+## Checks
 
-## Your six tasks
-
-Do them in order. Each one has a check, so you know when it's right.
-
-| # | Task | You practise | Check |
-|---|---|---|---|
-| 1 | Make `BmiScreen` a `StatefulWidget`. Add `gender`, `height` (a `double`, 175) and `weight` (an `int`, 65) to the State. | state fields (9.3) | it still runs, and looks the same |
-| 2 | Wire the segmented button and the slider: each stores its value with `setState`, and the big height number reads `height`. | segmented button and slider (9.8) | tap Female; drag the slider and the number follows |
-| 3 | Make the weight steppers work, with two methods like `addTicket` and `removeTicket`. Weight never goes below 1. | `setState` and an `if` (9.5) | tap − down to 1; it stops |
-| 4 | Add a `bmi` getter: weight ÷ (height in metres)². For now, make Calculate print it. | worked out, not stored (9.4, 9.5) | 175 cm and 65 kg prints **21.2** |
-| 5 | Add a `showResult` bool. Calculate shows `ResultView`; Re-calculate comes back. | a bool in the State, and `? :` | Calculate shows 21.2; Re-calculate keeps your values |
-| 6 | Give `categoryFor`, `colorFor` and `interpretationFor` their real `if`s. | plain `if`s | 18.5 is Normal; 25 is Overweight |
-
-**The categories:**
-
-| BMI | Category | Colour | Message (your own words are fine) |
-|---|---|---|---|
-| below 18.5 | Underweight | `AppColors.under` | A little under the healthy range. |
-| 18.5 to below 25 | Normal | `AppColors.normal` | Right in the healthy range. |
-| 25 to below 30 | Overweight | `AppColors.over` | A little over the healthy range. |
-| 30 and above | Obese | `AppColors.high` | Above the healthy range. |
+- 175 cm and 65 kg shows **21.2**, Normal.
+- Exactly 18.5 is Normal. Exactly 25 is Overweight.
+- Weight never goes below 1.
+- Re-calculate keeps the values you set.
 
 ## Two hints
 
 - **The slider is in centimetres.** The formula needs metres. If you get
   0.0021, that is the bug.
-- **Know one right answer before you trust any:** 175 cm and 65 kg is 21.2.
+- **Build the input view first**, with fixed numbers, before any state. Then
+  make it move.
 
 ## Bonus
 
-Add a Reset button under Calculate that puts everything back to Male, 175 cm
-and 65 kg. One method, one `setState`.
-
-## When you're done
-
-Every value on the screen should come from the State, and every control should
-change it. Then watch the solution videos, 9.10 P1 and P2, and compare.
+A Reset button under Calculate that puts everything back to Male, 175 cm and
+65 kg. One method, one `setState`.
