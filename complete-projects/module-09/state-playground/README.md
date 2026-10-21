@@ -10,7 +10,7 @@ and two inputs that make bad input impossible: a slider and a segmented
 button. One idea per screen, nothing on it that you have to read past.
 
 The TextField and controller are taught on the ticket card. The slider and segmented button lead into the ticket booking app in
-`../ticket-booking-v2-interactive/`, your BMI calculator in the 9.9 challenge.
+`../ticket-booking-v2-interactive/`, your BMI calculator in the 9.10 challenge.
 
 ```
 Learn it here  →  practise it here  →  apply it in a real app.

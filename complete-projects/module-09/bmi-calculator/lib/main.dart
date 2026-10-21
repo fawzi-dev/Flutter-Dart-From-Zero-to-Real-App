@@ -1,6 +1,6 @@
 // BMI Calculator -- Module 9 exercise, finished.
 //
-// Built from an empty starter in eight videos, 9.10 P1 to P8. Every stage is
+// Built from an empty starter in eight videos, 9.11 P1 to P8. Every stage is
 // in steps/. Nothing here is new: every widget was taught in Modules 7-9.
 
 import 'package:flutter/material.dart';

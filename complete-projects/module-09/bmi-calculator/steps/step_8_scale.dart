@@ -1,4 +1,4 @@
-// 9.10 P8 -- The scale.
+// 9.11 P8 -- The scale.
 // BmiScale and ScaleBand. Finished: identical to lib/main.dart
 
 import 'package:flutter/material.dart';

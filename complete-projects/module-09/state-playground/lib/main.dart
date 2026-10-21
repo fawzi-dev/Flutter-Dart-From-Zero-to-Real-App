@@ -1,8 +1,8 @@
-// End of lesson 9.9 P2 -- "const, static and static const".
+// End of lesson 9.9 P2 -- "static, and why static const".
 //
-// Proof that const widgets are not built again. ConstScreen has a counter and
-// the same LoudLabel twice; only one is const. LoudLabel prints whenever it
-// is built. Tap Add one: the terminal shows only the one without const.
+// The two labels on ConstScreen move into Labels: static const fields, one
+// copy, kept on the class. Every way of writing them except static const
+// fails, and the reason each one fails is the lesson.
 
 import 'package:flutter/material.dart';
 
@@ -219,6 +219,12 @@ class _HeightScreenState extends State<HeightScreen> {
   }
 }
 
+// Every label on ConstScreen: one copy, kept on the class.
+class Labels {
+  static const withoutConst = 'without const';
+  static const withConst = 'with const';
+}
+
 // A label that says so every time Flutter builds it.
 class LoudLabel extends StatelessWidget {
   const LoudLabel({super.key, required this.name});
@@ -254,8 +260,8 @@ class _ConstScreenState extends State<ConstScreen> {
             const SizedBox(height: 24),
             // The same widget twice. Only one of them is const.
             // ignore: prefer_const_constructors
-            LoudLabel(name: 'without const'),
-            const LoudLabel(name: 'with const'),
+            LoudLabel(name: Labels.withoutConst),
+            const LoudLabel(name: Labels.withConst),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {

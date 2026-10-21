@@ -1,4 +1,4 @@
-// 9.10 P6 -- The result view.
+// 9.11 P6 -- The result view.
 // showResult swaps two views; ResultView shows the number
 
 import 'package:flutter/material.dart';

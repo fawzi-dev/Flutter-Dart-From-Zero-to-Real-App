@@ -1,4 +1,4 @@
-// The claim 9.9 P2 makes on camera, checked: a const widget is not built
+// The claim 9.9 P1 makes on camera, checked: a const widget is not built
 // again when its parent rebuilds; the same widget without const is.
 
 import 'package:flutter/foundation.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:state_playground/main.dart';
 
 void main() {
-  testWidgets('9.9 P2 -- only the label without const is built again',
+  testWidgets('9.9 P1 -- only the label without const is built again',
       (tester) async {
     final lines = <String>[];
     final old = debugPrint;

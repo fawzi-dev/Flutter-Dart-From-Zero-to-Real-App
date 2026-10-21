@@ -1,4 +1,4 @@
-// End of lesson 9.9 P2 -- "const, static and static const".
+// End of lesson 9.9 P1 -- "const: watch it skip".
 //
 // Proof that const widgets are not built again. ConstScreen has a counter and
 // the same LoudLabel twice; only one is const. LoudLabel prints whenever it
