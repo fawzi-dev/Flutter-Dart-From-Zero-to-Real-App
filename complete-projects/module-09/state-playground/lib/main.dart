@@ -1,8 +1,8 @@
-// End of lesson 9.8 Part 3 -- "Two Choices Can Stay Visible".
+// End of lesson 9.9 P2 -- "const, static and static const".
 //
-// Two short choices, both on screen, one tap to switch: a SegmentedButton
-// above the height card. The Gender enum names the two answers; selected
-// takes a Set, and selection.first takes the one value back out.
+// Proof that const widgets are not built again. ConstScreen has a counter and
+// the same LoudLabel twice; only one is const. LoudLabel prints whenever it
+// is built. Tap Add one: the terminal shows only the one without const.
 
 import 'package:flutter/material.dart';
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HeightScreen(),
+      home: ConstScreen(),
     );
   }
 }
@@ -211,6 +211,57 @@ class _HeightScreenState extends State<HeightScreen> {
                   ],
                 ),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// A label that says so every time Flutter builds it.
+class LoudLabel extends StatelessWidget {
+  const LoudLabel({super.key, required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    debugPrint('built: $name');
+    return Text(name, style: const TextStyle(fontSize: 20));
+  }
+}
+
+class ConstScreen extends StatefulWidget {
+  const ConstScreen({super.key});
+
+  @override
+  State<ConstScreen> createState() => _ConstScreenState();
+}
+
+class _ConstScreenState extends State<ConstScreen> {
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('const')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('$count', style: const TextStyle(fontSize: 48)),
+            const SizedBox(height: 24),
+            // The same widget twice. Only one of them is const.
+            // ignore: prefer_const_constructors
+            LoudLabel(name: 'without const'),
+            const LoudLabel(name: 'with const'),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                setState(() => count++);
+              },
+              child: const Text('Add one'),
             ),
           ],
         ),

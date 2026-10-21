@@ -17,6 +17,7 @@ would have if you typed along.
 | `CounterScreen` | 9.2 | A number and a button. Broken in 9.2, alive in 9.3 P1. |
 | `DoubleScreen` | 9.8 P1 | "Double my number": input that cannot be trusted. |
 | `HeightScreen` | 9.8 P2 | A height card with a `Slider`: a number with walls. Gets a `SegmentedButton` in 9.8 P3. |
+| `ConstScreen` | 9.9 P2 | A counter and the same `LoudLabel` twice, one `const`: watch which one is built again. |
 
 ## The steps
 
@@ -29,12 +30,21 @@ would have if you typed along.
 | `step_5_parse.dart` | 9.8 P1 | `double.parse` vs `double.tryParse`, `errorText`, `keyboardType` | `DoubleScreen` recaps the controller from the ticket; bad input gets a red line, not an exception |
 | `step_6_slider.dart` | 9.8 P2 | `Slider`: `min`, `max`, `divisions`, a `double` field, `round()` | `HeightScreen`: one card, the height, and a slider held to 120–220 cm |
 | `step_7_segmented.dart` | 9.8 P3 | `SegmentedButton`, an `enum`, a `Set` | A Male / Female toggle above the height card |
+| `step_8_const.dart` | 9.9 P2 | `const` widgets are not built again | `ConstScreen`: tap Add one; only the label without `const` prints `built:` again |
 
-`lib/main.dart` is the same file as `step_7`, so the project always runs.
+`lib/main.dart` is the same file as `step_8`, so the project always runs.
 
-The ticket card runs from 9.5 P1 to 9.7 P2. Dicee is 9.4. The BMI
+The ticket card runs from 9.5 P1 to 9.7. Dicee is 9.4. The BMI
 challenge is 9.9 and its solution is 9.10.
 
+## The videos
+
+The beats for every video are in the header comment of its own step file,
+numbered, in recording order. Open the file, read the header, record down the
+list.
+
+The shape is the same every time: **Explain the idea on slides → open this
+project → add one screen or change one line → run it → say what changed.**
 
 ## The mistakes are the lessons
 
@@ -42,7 +52,7 @@ Several videos make a mistake on purpose. None of the broken versions
 is saved as a file except step 3, because each one is one line away from the
 step it belongs to:
 
-| Lesson | The mistake, made on purpose | What you see |
+| Video | The mistake, made on camera | What you see |
 |---|---|---|
 | 9.1 P1 | Leave out `onPressed` | `The named parameter 'onPressed' is required, but there's no corresponding argument.` |
 | 9.1 P2 | `onPressed: handleTap()` | `This expression has a type of 'void' so its value can't be used.` and `Tapped!` printed with nobody tapping |
