@@ -9,6 +9,10 @@ void main() {
   runApp(const BmiApp());
 }
 
+// ---------------------------------------------------------------------------
+//  Given in the starter: every colour, every piece of text, every spacing.
+// ---------------------------------------------------------------------------
+
 // The palette. Named once, used everywhere.
 class AppColors {
   static const background = Color(0xFFF4F6FB);
@@ -22,6 +26,44 @@ class AppColors {
   static const normal = Color(0xFF24D876);
   static const over = Color(0xFFFF9F43);
   static const high = Color(0xFFFF5A5F);
+}
+
+// Every piece of text on the screen.
+class AppStrings {
+  static const title = 'BMI Calculator';
+  static const male = 'Male';
+  static const female = 'Female';
+  static const height = 'Height';
+  static const weight = 'Weight';
+  static const cm = 'cm';
+  static const kg = 'kg';
+  static const calculate = 'Calculate BMI';
+  static const recalculate = 'Re-calculate';
+  static const you = 'You';
+
+  static const underweight = 'Underweight';
+  static const normal = 'Normal';
+  static const overweight = 'Overweight';
+  static const obese = 'Obese';
+
+  static const underMessage =
+      'A little under the healthy range. Eat a bit more.';
+  static const normalMessage = 'Right in the healthy range. Nice work!';
+  static const overMessage =
+      'A little over the healthy range. Move a bit more.';
+  static const obeseMessage =
+      'Above the healthy range. Small, steady changes add up.';
+}
+
+// The spacing scale. Seven numbers, reused everywhere.
+class AppSpacing {
+  static const tiny = 4.0;
+  static const small = 8.0;
+  static const medium = 16.0;
+  static const card = 20.0;
+  static const large = 24.0;
+  static const xl = 32.0;
+  static const xxl = 40.0;
 }
 
 enum Gender { male, female }
@@ -79,7 +121,7 @@ class _BmiScreenState extends State<BmiScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('BMI Calculator'),
+        title: const Text(AppStrings.title),
         backgroundColor: AppColors.background,
         foregroundColor: AppColors.ink,
         centerTitle: true,
@@ -94,18 +136,18 @@ class _BmiScreenState extends State<BmiScreen> {
               )
             : SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(AppSpacing.medium),
                   child: Column(
                     children: [
                       SegmentedButton<Gender>(
                         segments: const [
                           ButtonSegment(
                             value: Gender.male,
-                            label: Text('Male'),
+                            label: Text(AppStrings.male),
                           ),
                           ButtonSegment(
                             value: Gender.female,
-                            label: Text('Female'),
+                            label: Text(AppStrings.female),
                           ),
                         ],
                         selected: {gender},
@@ -113,12 +155,15 @@ class _BmiScreenState extends State<BmiScreen> {
                           setState(() => gender = selection.first);
                         },
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.medium),
                       InputCard(
-                        label: 'Height',
+                        label: AppStrings.height,
                         child: Column(
                           children: [
-                            BigNumber(value: '${height.round()}', unit: 'cm'),
+                            BigNumber(
+                              value: '${height.round()}',
+                              unit: AppStrings.cm,
+                            ),
                             Slider(
                               value: height,
                               min: 120,
@@ -132,9 +177,9 @@ class _BmiScreenState extends State<BmiScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: AppSpacing.medium),
                       InputCard(
-                        label: 'Weight',
+                        label: AppStrings.weight,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -142,7 +187,7 @@ class _BmiScreenState extends State<BmiScreen> {
                               icon: Icons.remove,
                               onPressed: removeWeight,
                             ),
-                            BigNumber(value: '$weight', unit: 'kg'),
+                            BigNumber(value: '$weight', unit: AppStrings.kg),
                             StepperButton(
                               icon: Icons.add,
                               onPressed: addWeight,
@@ -150,9 +195,9 @@ class _BmiScreenState extends State<BmiScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: AppSpacing.large),
                       PrimaryButton(
-                        label: 'Calculate BMI',
+                        label: AppStrings.calculate,
                         onPressed: () {
                           setState(() => showResult = true);
                         },
@@ -168,10 +213,10 @@ class _BmiScreenState extends State<BmiScreen> {
 
 // Boundaries: exactly 18.5 is Normal, exactly 25 is Overweight.
 String categoryFor(double bmi) {
-  if (bmi < 18.5) return 'Underweight';
-  if (bmi < 25) return 'Normal';
-  if (bmi < 30) return 'Overweight';
-  return 'Obese';
+  if (bmi < 18.5) return AppStrings.underweight;
+  if (bmi < 25) return AppStrings.normal;
+  if (bmi < 30) return AppStrings.overweight;
+  return AppStrings.obese;
 }
 
 Color colorFor(double bmi) {
@@ -182,10 +227,10 @@ Color colorFor(double bmi) {
 }
 
 String interpretationFor(double bmi) {
-  if (bmi < 18.5) return 'A little under the healthy range. Eat a bit more.';
-  if (bmi < 25) return 'Right in the healthy range. Nice work!';
-  if (bmi < 30) return 'A little over the healthy range. Move a bit more.';
-  return 'Above the healthy range. Small, steady changes add up.';
+  if (bmi < 18.5) return AppStrings.underMessage;
+  if (bmi < 25) return AppStrings.normalMessage;
+  if (bmi < 30) return AppStrings.overMessage;
+  return AppStrings.obeseMessage;
 }
 
 /// A white rounded card with a label above its content.
@@ -199,7 +244,7 @@ class InputCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppSpacing.card),
       decoration: BoxDecoration(
         color: AppColors.card,
         borderRadius: BorderRadius.circular(20),
@@ -222,7 +267,7 @@ class InputCard extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.small),
           child,
         ],
       ),
@@ -252,7 +297,10 @@ class BigNumber extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 6, bottom: 8),
+          padding: const EdgeInsets.only(
+            left: AppSpacing.small,
+            bottom: AppSpacing.small,
+          ),
           child: Text(
             unit,
             style: const TextStyle(color: AppColors.muted, fontSize: 18),
@@ -329,7 +377,7 @@ class ResultView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.medium),
       child: Column(
         children: [
           const Spacer(),
@@ -342,16 +390,19 @@ class ResultView extends StatelessWidget {
             ),
           ),
           CategoryPill(category: categoryFor(bmi), color: colorFor(bmi)),
-          const SizedBox(height: 40),
+          const SizedBox(height: AppSpacing.xxl),
           BmiScale(category: categoryFor(bmi)),
-          const SizedBox(height: 32),
+          const SizedBox(height: AppSpacing.xl),
           Text(
             interpretationFor(bmi),
             textAlign: TextAlign.center,
             style: const TextStyle(color: AppColors.muted, fontSize: 16),
           ),
           const Spacer(),
-          PrimaryButton(label: 'Re-calculate', onPressed: onRecalculate),
+          PrimaryButton(
+            label: AppStrings.recalculate,
+            onPressed: onRecalculate,
+          ),
         ],
       ),
     );
@@ -368,7 +419,10 @@ class CategoryPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.medium,
+        vertical: AppSpacing.tiny,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(20),
@@ -394,31 +448,31 @@ class BmiScale extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: 6,
+      spacing: AppSpacing.small,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Expanded(
           child: ScaleBand(
             color: AppColors.under,
-            isYou: category == 'Underweight',
+            isYou: category == AppStrings.underweight,
           ),
         ),
         Expanded(
           child: ScaleBand(
             color: AppColors.normal,
-            isYou: category == 'Normal',
+            isYou: category == AppStrings.normal,
           ),
         ),
         Expanded(
           child: ScaleBand(
             color: AppColors.over,
-            isYou: category == 'Overweight',
+            isYou: category == AppStrings.overweight,
           ),
         ),
         Expanded(
           child: ScaleBand(
             color: AppColors.high,
-            isYou: category == 'Obese',
+            isYou: category == AppStrings.obese,
           ),
         ),
       ],
@@ -438,14 +492,14 @@ class ScaleBand extends StatelessWidget {
     return Column(
       children: [
         Text(
-          isYou ? 'You' : '',
+          isYou ? AppStrings.you : '',
           style: TextStyle(
             color: color,
             fontSize: 12,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.tiny),
         Container(
           height: isYou ? 22 : 10,
           decoration: BoxDecoration(

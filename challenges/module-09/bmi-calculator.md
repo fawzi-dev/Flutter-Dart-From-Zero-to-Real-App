@@ -4,7 +4,14 @@ Build a BMI calculator from an empty app. One screen, two views, and every
 value on it comes from state.
 
 **Starter:** `starter-projects/module-09/bmi-calculator/`, an empty
-`MaterialApp` with an empty `Scaffold`.
+`MaterialApp` with an empty `Scaffold`, plus everything that isn't the lesson,
+already named for you:
+
+- `AppColors`: every colour, including the four health-scale colours
+- `AppStrings`: every piece of text, from the title to the four messages
+- `AppSpacing`: the spacing scale, from `tiny` (4) to `xxl` (40)
+
+Use them. Don't retype a colour, a string or a spacing number.
 
 ## The app
 
@@ -27,8 +34,9 @@ value on it comes from state.
    (used for Height and for Weight), a `StepperButton` (used for − and +), and a
    `PrimaryButton` (used for Calculate and Re-calculate). Each takes what it
    shows and what it does as constructor parameters.
-2. **One `AppColors` class** names every colour once. Nothing else uses a raw
-   `Color(0x…)`.
+2. **Use the starter's `AppColors`, `AppStrings` and `AppSpacing`.** Nothing
+   in your widgets uses a raw `Color(0x…)`, a typed string, or a spacing
+   number.
 3. **The state:** `gender`, `height` (a `double`) and `weight` (an `int`) are
    fields of the State. Every change goes through `setState`.
 4. **The BMI is a getter**, worked out from height and weight. Never stored.

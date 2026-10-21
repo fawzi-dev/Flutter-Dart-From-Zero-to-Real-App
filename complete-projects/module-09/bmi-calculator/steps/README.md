@@ -5,7 +5,7 @@ Each file is `lib/main.dart` at the end of that video.
 
 | File | Video | What it adds |
 |---|---|---|
-| `step_1_shell.dart` | **9.10 P1** | `AppColors`, `BmiApp`, the empty screen with an `AppBar` |
+| `step_1_shell.dart` | **9.10 P1** | A look at the starter's `AppColors`, `AppStrings`, `AppSpacing`; the empty screen with an `AppBar` |
 | `step_2_cards.dart` | **9.10 P2** | `InputCard` and `BigNumber`: Height 175 cm, Weight 65 kg |
 | `step_3_buttons.dart` | **9.10 P3** | `StepperButton` and `PrimaryButton`, still doing nothing |
 | `step_4_gender_height.dart` | **9.10 P4** | Stateful; `gender` and `height`; the segmented button and the slider |
