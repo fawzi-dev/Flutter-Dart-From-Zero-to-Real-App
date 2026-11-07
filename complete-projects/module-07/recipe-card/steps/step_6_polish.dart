@@ -13,7 +13,7 @@
 //   - two hairline rules: a Container with height: 1 and a colour, using
 //     only what 7.11 taught
 //
-// This is the card as it appears in the lesson 7.13 slides.
+// This is the finished look of the card; only the scrolling fix comes after it.
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -7,7 +7,7 @@ Your first Flutter build from (nearly) nothing: a personal profile card, static,
 **Before you start:** run `git init` in the starter folder and make at least two honest commits while you build. Use the Module 7 Git routine: check `git diff`, commit when the app runs, restore only when you truly want to throw work away.
 
 ## The target
-*(screenshot in the starter's README — match the structure, personalize the content)*
+*(This is what the finished card looks like. Match the structure, personalise the content.)*
 - A **gradient background** filling the screen (two shades of one colour, top to bottom)
 - Centered column: a round profile photo sitting inside a **white ring** → your name (large, bold) → a **pill-shaped badge** reading something like `FLUTTER DEVELOPER IN TRAINING` (small, letter-spaced, on a translucent background) → **three info cards** (phone, email, link), each one an icon inside a **tinted circle** next to the text, on a white rounded card with a soft shadow
 

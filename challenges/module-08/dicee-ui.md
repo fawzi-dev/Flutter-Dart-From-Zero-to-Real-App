@@ -5,9 +5,9 @@ Build the dice screen — layout only. Next module, one function brings it to li
 **Starter:** `starter-projects/module-08/dicee/` — empty Scaffold + all 6 dice images in assets.
 
 ## The target
-*(held up on camera in video 8.8 — the reference build is `complete-projects/module-08/dicee-v1-static/`)*
+*(This is what the finished app looks like. The reference build is `complete-projects/module-08/dicee-v1-static/`.)*
 - A blue **gradient background** filling the screen (dark at the top, lighter at the bottom)
-- A `DICEE` title at the top (big, bold, wide letter-spacing) with a small subtitle under it
+- A `DICE` title at the top (big, bold, wide letter-spacing) with a small subtitle under it
 - Two dice images **side by side**, equal size, each sitting on a soft translucent rounded pad, filling the width nicely
 - A large styled `ROLL` button with an icon, centered below the dice — dimmed, because nothing can happen yet
 

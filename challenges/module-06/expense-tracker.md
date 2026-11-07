@@ -22,7 +22,11 @@ A program that records expenses and reports on them, driven by a **menu loop**: 
 
 ## Expected output (shape, not exact numbers)
 ```
-1) Add expense   2) List   3) By category   4) Largest   5) Quit
+1) Add expense
+2) List expenses
+3) Totals by category
+4) Largest expense
+5) Quit
 Choose: 1
 Description: Groceries
 Amount: 54.30
@@ -50,7 +54,7 @@ Largest: Groceries ($54.30)
 ## Rubric — check every box before the solution
 - [ ] `Category` is an enum — a category name cannot be typed or misspelled anywhere
 - [ ] `Expense` is immutable (all fields `final`)
-- [ ] Every method that "answers a question" **returns**; printing happens in `printAll` and `main`'s summary only
+- [ ] A value that "answers a question" (like `total`) is **returned**, not printed; printing lives in the `print…` methods and `main`
 - [ ] Adding a sixth value to the enum costs ONE word — the picker and the report follow by themselves
 - [ ] `total` is a getter, not a stored field
 - [ ] Adding a 7th expense = one line in `main`

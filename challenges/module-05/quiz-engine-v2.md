@@ -7,7 +7,7 @@ Rebuild the quiz so the parallel-lists flaw is impossible. Same output as v1 —
 2. A single `List<Question>` replaces the two parallel lists. A question and its answer now physically cannot desync.
 3. A `Quiz` class that:
    - holds the `List<Question>` and a score
-   - has a method `check(int index, bool userAnswer)` that prints the verdict line and updates the score
+   - has a method `check(Question question, bool userAnswer)` that prints the verdict line and updates the score
    - has a method `printResult()` for the final score line
 4. `main()` only: builds the question list, creates the `Quiz`, asks the user each question, and reports the result. No scoring logic in `main` — the `Quiz` owns that.
 5. Output identical to v1 — refactoring changes structure, never behavior.
@@ -20,7 +20,8 @@ Rebuild the quiz so the parallel-lists flaw is impossible. Same output as v1 —
 
 ## Hints
 - Start with just the `Question` class and ONE question printed. Run. Then the list. Run. Then `Quiz`. Small steps.
-- Inside `Quiz`, a question's answer is `questions[index].answer` — the dot reaches into the object.
+- Inside `check`, the right answer is `question.answer` — the dot reaches into the object.
+- Looping over the questions? Each one now carries its own answer, so a `for-in` works: `for (final question in quiz.questions)`.
 - `Quiz` needs a constructor that receives the question list.
 
 ## Bonus

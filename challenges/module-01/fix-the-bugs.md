@@ -1,4 +1,4 @@
-# Challenge 2 — Fix the Bugs (error-reading practice)
+# Practice — Fix the Bugs (error-reading practice)
 
 Five broken programs. For each one: **read the error, find the line, fix it** — then write one line in your bug journal (what it said → what it was). Programs 4 and 5 produce errors you haven't seen in the videos. That's on purpose: the ritual works on errors you've never met. Read. Locate. Compare.
 

@@ -1,4 +1,4 @@
-# Challenge 1 — Tip Calculator (console)
+# Challenge — Tip Calculator (console)
 
 Build a program that **asks** for the dinner details, then calculates the tip and splits the bill. **Blank file, `dart run` — no starter code. You've got this.**
 
@@ -6,13 +6,17 @@ Build a program that **asks** for the dinner details, then calculates the tip an
 You and two friends had dinner. The bill is **87.50**, you're tipping **15%**, splitting **3** ways.
 
 ## Requirements
-1. Store the bill, tip percentage, and number of people in variables — use `final` wherever the value never changes.
+1. **Ask** for the bill, the tip percentage and the number of people — `stdout.write` for the prompt, `stdin.readLineSync()` to read, `double.parse` / `int.parse` to convert — and store each in a variable. Use `final` wherever the value never changes.
 2. **Calculate** the tip, the total, and the per-person share. Typing the answers in as numbers is cheating yourself.
 3. Every money amount prints with **exactly 2 decimal places**.
 4. Build each receipt line with **string interpolation** (`$` / `${...}`).
 
 ## Expected output
 ```
+Bill amount: 87.50
+Tip percent: 15
+Split between how many people? 3
+
 --- Dinner Receipt ---
 Bill:      $87.50
 Tip (15%): $13.13

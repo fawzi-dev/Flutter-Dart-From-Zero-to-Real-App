@@ -8,13 +8,17 @@ Build a true/false quiz that asks questions, checks answers, and reports a score
 1. A `List<String>` of at least 5 true/false questions, and a `List<bool>` of their correct answers (index 0 ↔ index 0, etc.).
 2. Ask the user each question in turn and read their true/false answer from the keyboard (lesson 1.7's prompt-read-convert shape).
 3. Loop through the quiz **once** with a single loop — adding question #6 must require ZERO changes to the loop.
-4. For each question print: the question number (starting at 1, not 0!), the question, the given answer, and `CORRECT` / `WRONG`.
+4. Show each question with its number (starting at 1, not 0!). After each answer, print `Correct!` — or `Wrong`, followed by the right answer.
 5. Track the score; end with `You scored 4/5 (80.0%)`.
 
 ## Expected output
 ```
-Q1: The sky is blue. Your answer: true — CORRECT
-Q2: Cats can fly. Your answer: true — WRONG
+Q1. The sky is blue. (true/false): true
+Correct!
+
+Q2. Cats can fly. (true/false): true
+Wrong — the answer was false.
+
 ...
 You scored 4/5 (80.0%)
 ```
