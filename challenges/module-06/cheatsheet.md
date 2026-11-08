@@ -1,6 +1,6 @@
-# Cheat Sheet — Dart (Part A)
+# Cheat Sheet — Dart (Modules 1–6)
 
-One-page reference for everything in Modules 1–6. Keep it open while you code.
+One-page reference for everything in the Dart modules. Keep it open while you code.
 
 ## Variables & types
 ```dart
@@ -26,13 +26,14 @@ int.tryParse('x') // null instead of crashing
 'Hello $name'              // insert a value
 'Sum: ${a + b}'            // insert an expression
 'It\'s'                    // escape a quote
+"It's"                     // ...or use double quotes
 'Price: \$5'               // literal dollar sign
 ```
 
-## Reading input (local console)
+## Reading input (run with `dart run`)
 ```dart
 import 'dart:io';
-stdout.write('Name: ');
+stdout.write('Name: ');                    // prompt, no new line
 final line = stdin.readLineSync() ?? '';   // ?? '' : "or empty if nothing"
 final n = int.parse(stdin.readLineSync() ?? '');
 ```
@@ -73,16 +74,19 @@ ages['sam'];  ages['x'] = 9;  ages.containsKey('sam');
 ages['k'] = (ages['k'] ?? 0) + 1;   // running total pattern
 ```
 
-## Classes, enums & null safety
+## Classes, getters, enums & null safety
 ```dart
 enum Priority { low, medium, high }
+Priority.values          // every value, in order
+Priority.high.name       // 'high'
 
 class Task {
   final String title;
   final String? note;          // ? -> may be null
   bool isDone;
   Task({required this.title, this.note, this.isDone = false});
-  String describe() => isDone ? '$title (done)' : title;
+  String describe() => isDone ? '$title (done)' : title;   // method
+  bool get hasNote => note != null;                          // getter: worked out when read
 }
 
 final t = Task(title: 'Write');
@@ -95,5 +99,6 @@ maybe!;               // "I promise it's not null" — LAST resort
 ## Common errors (and what they mean)
 - `FormatException` → `parse` got text that isn't a number. Use `tryParse`.
 - `RangeError (index)` → asked a list for an index it doesn't have (0-based!).
-- `type 'int' is not a subtype of 'double'` → JSON number; use `(x as num).toDouble()`.
+- `Undefined name` → a typo, or the variable lives in a different scope.
+- `A value of type 'double' can't be assigned to a variable of type 'int'` → the types don't match; change the type or the value.
 - Red squiggle on a nullable → you must handle the `null` before using it.

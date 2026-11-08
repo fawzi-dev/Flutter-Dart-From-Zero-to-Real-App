@@ -11,7 +11,7 @@ folder to open.
 
 | Folder | What it is | When you use it |
 |---|---|---|
-| [`challenges/`](challenges/) | The brief for every challenge, plus a cheatsheet for most modules | When a video ends with a challenge |
+| [`challenges/`](challenges/) | The brief for every challenge, plus a one-page cheat sheet for some modules | When a video ends with a challenge |
 | [`starter-projects/`](starter-projects/) | The project you open before you start building | At the start of a lesson or challenge that uses one |
 | [`complete-projects/`](complete-projects/) | The finished code for every project, with `steps/` snapshots | After you've tried it yourself |
 
