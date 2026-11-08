@@ -1,0 +1,72 @@
+# One zip per project, so a student can download just the project a lesson
+# needs instead of the whole repository.
+#
+# Every push to main that touches a project rebuilds the zips and replaces the
+# files on the "projects" release. The download links never change:
+#
+#   https://github.com/<owner>/<repo>/releases/download/projects/module-08-dicee-starter.zip
+#
+# Zips are made with `git archive`, so they contain exactly what is committed:
+# no build/, .dart_tool/ or other local files can end up inside.
+
+name: Project zips
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "starter-projects/**"
+      - "complete-projects/**"
+      - ".github/workflows/project-zips.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: project-zips
+  cancel-in-progress: false
+
+jobs:
+  zips:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: projects
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build one zip per project
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          # A project is any folder with a pubspec.yaml, two levels down:
+          #   starter-projects/module-08/dicee/pubspec.yaml -> module-08-dicee-starter.zip
+          git ls-files -- 'starter-projects/*/*/pubspec.yaml' 'complete-projects/*/*/pubspec.yaml' |
+          while read -r pubspec; do
+            dir=$(dirname "$pubspec")
+            kind=$(echo "$dir" | cut -d/ -f1)     # starter-projects | complete-projects
+            module=$(echo "$dir" | cut -d/ -f2)   # module-08
+            name=$(echo "$dir" | cut -d/ -f3)     # dicee
+            suffix=$([ "$kind" = "starter-projects" ] && echo starter || echo complete)
+            git archive --format=zip --prefix="$name-$suffix/" -o "dist/$module-$name-$suffix.zip" "HEAD:$dir"
+            echo "built dist/$module-$name-$suffix.zip"
+          done
+          ls -la dist
+
+      - name: Create the release if it does not exist yet
+        run: |
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" \
+            --title "Project downloads" \
+            --notes "One zip per course project. Download the one your lesson links to, unzip it, and open that folder in VS Code. These files update automatically when a project changes." \
+            --latest=false
+
+      - name: Upload the zips (replacing the old ones)
+        run: gh release upload "$TAG" dist/*.zip --clobber
+
+      - name: Remove zips of projects that no longer exist
+        run: |
+          set -euo pipefail
+          gh release view "$TAG" --json assets --jq '.assets[].name' | while read -r asset; do
+            [ -f "dist/$asset" ] || { echo "removing $asset"; gh release delete-asset "$TAG" "$asset" --yes; }
+          done
