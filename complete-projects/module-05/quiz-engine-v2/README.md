@@ -2,8 +2,8 @@
 
 The finished program, in `bin/`.
 
-The same quiz, rebuilt with classes. Diff it against
-`../../module-04/quiz-engine-v1/` — the diff is the lesson.
+The same quiz as v1 (the Module 4 project, `quiz-engine-v1`), rebuilt with
+classes. Compare the two side by side — the difference is the lesson.
 
 ## Run it
 

@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         // TODO: Build the About Me card here (Module 7).
-        // The brief: challenges/module-07/about-me-card.md — your photo is at assets/profile.png
+        // The brief is in the About Me Card Challenge lesson — your photo is at assets/profile.png
       ),
     );
   }

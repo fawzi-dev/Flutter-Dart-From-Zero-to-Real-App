@@ -2,8 +2,8 @@
 
 The finished program, in `bin/`.
 
-The same game as v1, refactored into functions. Diff it against
-`../../module-02/guessing-game-v1/` — the diff is the lesson.
+The same game as v1 (the Module 2 project, `guessing-game-v1`), refactored into
+functions. Compare the two side by side — the difference is the lesson.
 
 ## Run it
 

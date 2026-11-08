@@ -3,7 +3,7 @@
 A static profile card — your first Flutter build (Module 7).
 
 ## Your mission
-Full brief + rubric: `challenges/module-07/about-me-card.md` in this repo.
+Full brief + rubric: the **About Me Card Challenge Brief**, in the Challenge: About Me Card lesson (also in the course repo at `challenges/module-07/about-me-card.md`).
 
 ## Run it
 ```
